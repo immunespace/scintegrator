@@ -1,0 +1,3 @@
+﻿sample_id,study_id,filename
+PBMC_10k_1,seurat,test/PBMC3k_1
+PBMC_10k_2,seurat,test/PBMC3k_2
