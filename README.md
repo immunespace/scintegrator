@@ -8,6 +8,9 @@
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
 [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/immunespace/scintegrator)
 
+> [!WARNING]
+> This pipeline is still under construction and should not be used
+
 ## Introduction
 
 **immunespace/scintegrator** is a bioinformatics pipeline that ...
@@ -58,7 +61,7 @@ nextflow run immunespace/scintegrator \
 ```
 
 > [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
+> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_
 > see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
 
 ## Credits

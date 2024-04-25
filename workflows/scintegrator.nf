@@ -27,14 +27,15 @@ workflow SCINTEGRATOR {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
+    ch_samplesheet.dump(tag: "samplesheet")
+
     //
     // MODULE: Run FastQC
     //
-    FASTQC (
+    SCANPY_QC (
         ch_samplesheet
     )
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]})
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
+    ch_versions = ch_versions.mix(SCANPY_QC.out.versions.first())
 
     //
     // Collate and save software versions
