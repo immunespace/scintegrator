@@ -36,8 +36,8 @@ workflow SCINTEGRATOR {
     // MODULE: Run FastQC
     //
     SCANPY_QC (
-        ch_samplesheet.collect(),
-        ch_report_rmd
+        ch_samplesheet,
+        ch_report_rmd.collect()
     )
     ch_versions = ch_versions.mix(SCANPY_QC.out.versions.first())
 
