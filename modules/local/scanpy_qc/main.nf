@@ -1,7 +1,7 @@
 process SCANPY_QC {
     conda '${moduleDir}/environment.yml'
     container 'docker.io/scintegrator/scanpy_qc:dev'
-    publishDir "scanpy_qc", mode: 'copy'
+    publishDir "${params.outdir}/scanpy_qc", mode: 'copy'
 
     input:
     tuple val(meta), path(matrix)
