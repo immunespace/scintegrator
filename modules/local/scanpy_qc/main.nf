@@ -1,13 +1,15 @@
 process SCANPY_QC {
     conda '${moduleDir}/environment.yml'
     container 'docker.io/scintegrator/scanpy_qc:dev'
+    publishDir "scanpy_qc", mode: 'copy'
 
     input:
     tuple val(meta), path(matrix)
+    path(qc_nb)
 
     output:
-    tuple val(meta), path(h5ad), emit: h5ad
-    path ""
+    tuple val(meta), path("*.h5ad"), emit: h5ad
+    tuple val(meta), path("*.html"), emit: html
     path  "versions.yml"       , emit: versions
 
     when:
@@ -16,7 +18,7 @@ process SCANPY_QC {
     script:
     """
     #python -m ipykernel install --user --name pipeline_QC
-    papermill ${projectDir}/assets/pipeline_QC.ipynb pipeline_QC_output.ipynb \\
+    papermill ${qc_nb} pipeline_QC_output.ipynb \\
     -p species human \\
     -p subject sub2049 \\
     -p min_genes 33 \\
@@ -24,5 +26,9 @@ process SCANPY_QC {
     -p pct_mt 15 \\
     -p total_counts 200
     jupyter nbconvert --to html pipeline_QC_output.ipynb
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version | sed 's/Python //g')
+    END_VERSIONS
     """
 }

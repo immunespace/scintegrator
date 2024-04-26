@@ -27,6 +27,8 @@ workflow SCINTEGRATOR {
 
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
+    ch_report_rmd = Channel.fromPath(params.qc_nb, checkIfExists: true)
+
 
     ch_samplesheet.dump(tag: "samplesheet")
 
@@ -34,7 +36,8 @@ workflow SCINTEGRATOR {
     // MODULE: Run FastQC
     //
     SCANPY_QC (
-        ch_samplesheet
+        ch_samplesheet.collect(),
+        ch_report_rmd
     )
     ch_versions = ch_versions.mix(SCANPY_QC.out.versions.first())
 
