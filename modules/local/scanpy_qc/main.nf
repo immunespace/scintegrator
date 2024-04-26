@@ -1,5 +1,6 @@
 process SCANPY_QC {
-    conda "${moduleDir}/environment.yml"
+    conda '${moduleDir}/environment.yml'
+    container 'docker.io/scintegrator/scanpy_qc:dev'
 
     input:
     tuple val(meta), path(matrix)
