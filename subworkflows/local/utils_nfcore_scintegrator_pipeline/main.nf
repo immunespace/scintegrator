@@ -82,23 +82,10 @@ workflow PIPELINE_INITIALISATION {
     //
     Channel
         .fromSamplesheet("input")
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
-        }
-        .groupTuple()
-        .map {
-            validateInputSamplesheet(it)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
-        }
+        .dump(tag: "samplesheet channel")
+        .dump {tag: "after mapping"}
         .set { ch_samplesheet }
+
 
     emit:
     samplesheet = ch_samplesheet
@@ -156,7 +143,7 @@ def validateInputParameters() {
 
 //
 // Validate channels from input samplesheet
-//
+// This function is not needed and not used for now
 def validateInputSamplesheet(input) {
     def (metas, fastqs) = input[1..2]
 

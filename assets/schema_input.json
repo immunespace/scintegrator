@@ -16,15 +16,16 @@
             "path": {
                 "type": "string",
                 "format": "file-path",
+                "pattern": "^\\S+\\.h5",
                 "exists": true,
                 "errorMessage": "Path to folder with read matrix must be provided"
             },
             "study_id": {
                 "type": "string",
                 "format": "string",
-                "exists": true,
                 "pattern": "^\\S+$",
-                "errorMessage": "Study ID must be provided and cannot contain spaces"
+                "errorMessage": "Study ID must be provided and cannot contain spaces",
+                "meta": ["study_id"]
             }
         },
         "required": ["sample_id", "path", "study_id"]
