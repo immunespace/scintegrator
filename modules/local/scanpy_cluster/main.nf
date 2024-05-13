@@ -1,13 +1,13 @@
-process SCANPY_QC {
+process SCANPY_CLUSTER {
     //build container under the same folder first with
-    // docker build . -t scintegrator/scanpy_qc:dev
+    // docker build . -t scintegrator/scanpy_cluster:dev
     conda '${moduleDir}/environment.yml'
-    container 'docker.io/scintegrator/scanpy_qc:dev'
-    publishDir "${params.outdir}/scanpy_qc", mode: 'copy'
+    container 'docker.io/scintegrator/scanpy_cluster:dev'
+    publishDir "${params.outdir}/scanpy_cluster", mode: 'copy'
 
     input:
-    tuple val(meta), path(matrix)
-    path(qc_nb)
+    tuple val(meta), path(h5ad)
+    path(cluster_nb)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
@@ -18,15 +18,11 @@ process SCANPY_QC {
     task.ext.when == null || task.ext.when
 
     script:
+    //TODO: update code to provide parameters
     """
     #python -m ipykernel install --user --name pipeline_QC
-    papermill ${qc_nb} pipeline_QC_output.ipynb \\
+    papermill ${cluster_nb} pipeline_cluster.ipynb \\
     -p species human \\
-    -p subject sub2049 \\
-    -p min_genes 33 \\
-    -p min_cells 5 \\
-    -p pct_mt 15 \\
-    -p total_counts 200
     jupyter nbconvert --to html pipeline_QC_output.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
