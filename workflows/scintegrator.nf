@@ -28,17 +28,21 @@ workflow SCINTEGRATOR {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
     ch_report_qc = Channel.fromPath(params.qc_nb, checkIfExists: true)
-    ch_report_clustering = Channel.fromPath(params.cluster_nb, checkIfExists: true)
+    //ch_report_clustering = Channel.fromPath(params.cluster_nb, checkIfExists: true)
 
 
     ch_samplesheet.dump(tag: "samplesheet")
+                  .map{ it -> it[1] }
+                  .collect()
+                  .dump(tag: "samplesheet-collapsed")
+                  .set{ch_all_h5}
 
 
     //
     // MODULE: Run Scanpy QC
     //
     SCANPY_QC (
-        ch_samplesheet.collect(),
+        ch_all_h5,
         ch_report_qc.collect()
     )
     ch_versions = ch_versions.mix(SCANPY_QC.out.versions.first())
@@ -46,11 +50,11 @@ workflow SCINTEGRATOR {
     //
     // MODULE: Run Scanpy clustering
     //
-    SCANPY_CLUSTER (
-        SCANPY_QC.out.matrices,
-        ch_report_clustering.collet()
-    )
-    ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions.first())
+    //SCANPY_CLUSTER (
+    //    SCANPY_QC.out.matrices,
+    //    ch_report_clustering.collet()
+    //)
+    //ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions.first())
 
     //
     // Collate and save software versions

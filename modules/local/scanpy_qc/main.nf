@@ -6,12 +6,12 @@ process SCANPY_QC {
     publishDir "${params.outdir}/scanpy_qc", mode: 'copy'
 
     input:
-    tuple val(meta), path(matrix)
+    path(h5_files)
     path(qc_nb)
 
     output:
-    tuple val(meta), path("*.h5ad"), emit: h5ad
-    tuple val(meta), path("*.html"), emit: html
+    path("*.h5ad"), emit: h5ad
+    path("*.html"), emit: html
     path  "versions.yml"       , emit: versions
 
     when:
@@ -22,7 +22,6 @@ process SCANPY_QC {
     #python -m ipykernel install --user --name pipeline_QC
     papermill ${qc_nb} pipeline_QC_output.ipynb \\
     -p species human \\
-    -p subject sub2049 \\
     -p min_genes 33 \\
     -p min_cells 5 \\
     -p pct_mt 15 \\
