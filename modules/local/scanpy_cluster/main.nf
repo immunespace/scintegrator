@@ -6,12 +6,12 @@ process SCANPY_CLUSTER {
     publishDir "${params.outdir}/scanpy_cluster", mode: 'copy'
 
     input:
-    tuple val(meta), path(h5ad)
+    path(h5ad)
     path(cluster_nb)
 
     output:
-    tuple val(meta), path("*.h5ad"), emit: h5ad
-    tuple val(meta), path("*.html"), emit: html
+    path("*.h5ad"), emit: h5ad
+    path("*.html"), emit: html
     path  "versions.yml"       , emit: versions
 
     when:
