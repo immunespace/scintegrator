@@ -1,7 +1,6 @@
 process SCANPY_QC {
     //build container under the same folder first with
     // docker build . -t scintegrator/scanpy_qc:dev
-    conda '${moduleDir}/environment.yml'
     container 'docker.io/scintegrator/scanpy_qc:dev'
     publishDir "${params.outdir}/scanpy_qc", mode: 'copy'
 

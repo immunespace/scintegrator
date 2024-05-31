@@ -12,3 +12,9 @@ RUN touch .Renviron
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 ENV PATH /opt/conda/envs/scanpy_qc/bin:$PATH
+
+# RUN python -m ensurepip --upgrade
+# RUN python -m pip install --upgrade setuptools
+# RUN python -m pip install scimap
+
+

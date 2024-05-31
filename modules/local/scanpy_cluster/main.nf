@@ -1,8 +1,7 @@
 process SCANPY_CLUSTER {
     //build container under the same folder first with
     // docker build . -t scintegrator/scanpy_cluster:dev
-    conda '${moduleDir}/environment.yml'
-    container 'docker.io/scintegrator/scanpy_cluster:dev'
+    container 'docker.io/scintegrator/scanpy_qc:dev'
     publishDir "${params.outdir}/scanpy_cluster", mode: 'copy'
 
     input:

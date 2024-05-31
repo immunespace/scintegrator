@@ -50,11 +50,11 @@ workflow SCINTEGRATOR {
     //
     // MODULE: Run Scanpy clustering
     //
-    //SCANPY_CLUSTER (
-    //    SCANPY_QC.out.matrices,
-    //    ch_report_clustering.collet()
-    //)
-    //ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions.first())
+    SCANPY_CLUSTER (
+       SCANPY_QC.out.h5ad,
+       ch_report_clustering.collet()
+    )
+    ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions.first())
 
     //
     // Collate and save software versions

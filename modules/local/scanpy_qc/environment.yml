@@ -3,9 +3,21 @@ channels:
   - conda-forge
   - bioconda
   - defaults
+
 dependencies:
-  - conda-forge::python=3.12
+  - conda-forge::python=3.10
   - conda-forge::scanpy=1.10.1
   - conda-forge::papermill=2.5.0
   - conda-forge::ipykernel=6.29.3
   - conda-forge::notebook=7.1.3
+  - conda-forge::numpy
+  - conda-forge::pandas
+  - conda-forge::anndata
+  - conda-forge::seaborn
+  - conda-forge::matplotlib
+  - bioconda::pyensembl
+  - conda-forge::scikit-learn
+  - conda-forge::numcodecs
+  - conda-forge::pip
+  - pip:
+    - scimap
