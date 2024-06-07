@@ -28,7 +28,7 @@ workflow SCINTEGRATOR {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
     ch_report_qc = Channel.fromPath(params.qc_nb, checkIfExists: true)
-    //ch_report_clustering = Channel.fromPath(params.cluster_nb, checkIfExists: true)
+    ch_report_clustering = Channel.fromPath(params.cluster_nb, checkIfExists: true)
 
 
     ch_samplesheet.dump(tag: "samplesheet")
