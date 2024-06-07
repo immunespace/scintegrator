@@ -19,9 +19,8 @@ process SCANPY_CLUSTER {
     script:
     //TODO: update code to provide parameters
     """
-    #python -m ipykernel install --user --name pipeline_QC
-    papermill ${cluster_nb} pipeline_cluster.ipynb \\
-    -p species human \\
+    #python -m ipykernel install --user --name pipeline_cluster
+    papermill ${cluster_nb} pipeline_cluster_out.ipynb \\
     jupyter nbconvert --to html pipeline_QC_output.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
