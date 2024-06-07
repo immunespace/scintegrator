@@ -52,7 +52,7 @@ workflow SCINTEGRATOR {
     //
     SCANPY_CLUSTER (
        SCANPY_QC.out.h5ad,
-       ch_report_clustering.collet()
+       ch_report_clustering.collect()
     )
     ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions.first())
 
