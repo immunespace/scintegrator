@@ -7,6 +7,7 @@
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { SCANPY_QC              } from '../modules/local/scanpy_qc/main'
+include { SCANPY_CLUSTER         } from '../modules/local/scanpy_cluster/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
