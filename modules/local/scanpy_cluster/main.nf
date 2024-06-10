@@ -6,7 +6,7 @@ process SCANPY_CLUSTER {
 
     input:
     path(h5ad)
-    path(cluster_nb)
+    path(qc_nb)
 
     output:
     path("*.h5ad"), emit: h5ad
@@ -20,8 +20,8 @@ process SCANPY_CLUSTER {
     //TODO: update code to provide parameters
     """
     #python -m ipykernel install --user --name pipeline_cluster
-    papermill ${cluster_nb} pipeline_cluster_out.ipynb \\
-    jupyter nbconvert --to html pipeline_QC_output.ipynb
+    papermill ${qc_nb} pipeline_cluster_out.ipynb
+    jupyter nbconvert --to html pipeline_cluster_output.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')
