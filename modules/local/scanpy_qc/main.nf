@@ -1,4 +1,6 @@
 process SCANPY_QC {
+    label 'process_medium'
+
     //build container under the same folder first with
     // docker build . -t scintegrator/scanpy_qc:dev
     container 'docker.io/scintegrator/scanpy_qc:dev'
