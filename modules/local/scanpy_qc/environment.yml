@@ -5,7 +5,9 @@ channels:
   - defaults
 
 dependencies:
-  - conda-forge::python=3.10
+  - conda-forge::python=3.10.12
+  - r-base=4.2
+  - r-essentials
   - conda-forge::scanpy=1.10.1
   - conda-forge::papermill
   - conda-forge::ipykernel=6.29.3
@@ -15,9 +17,11 @@ dependencies:
   - conda-forge::anndata
   - conda-forge::seaborn
   - conda-forge::matplotlib
-  - bioconda::pyensembl
+  - bioconda::bioconductor-singler
   - conda-forge::scikit-learn
   - conda-forge::numcodecs
+  - conda-forge::ipywidgets
   - conda-forge::pip
   - pip:
     - scimap
+    - datacache
