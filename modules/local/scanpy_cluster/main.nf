@@ -22,6 +22,7 @@ process SCANPY_CLUSTER {
     """
     #python -m ipykernel install --user --name pipeline_cluster
     papermill ${qc_nb} pipeline_cluster_out.ipynb
+    jupyter nbextension enable --py widgetsnbextension
     jupyter nbconvert --to html pipeline_cluster_output.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

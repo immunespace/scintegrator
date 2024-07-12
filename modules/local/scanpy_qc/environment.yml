@@ -8,20 +8,27 @@ dependencies:
   - conda-forge::python=3.10.12
   - r-base=4.2
   - r-essentials
-  - conda-forge::scanpy=1.10.1
+  - conda-forge::scanpy
   - conda-forge::papermill
   - conda-forge::ipykernel=6.29.3
-  - conda-forge::notebook=7.1.3
+  - conda-forge::notebook
   - conda-forge::numpy
   - conda-forge::pandas
   - conda-forge::anndata
   - conda-forge::seaborn
   - conda-forge::matplotlib
-  - bioconda::bioconductor-singler
+  - bioconda::pyensembl
+  #- bioconda::bioconductor-singler
   - conda-forge::scikit-learn
   - conda-forge::numcodecs
+  - conda-forge::jupyterlab
+  - conda-forge::jupyterlab_widgets
   - conda-forge::ipywidgets
+  - conda-forge::widgetsnbextension
+  - conda-forge::ipython
   - conda-forge::pip
   - pip:
     - scimap
     - datacache
+    - singler
+    - celldex
