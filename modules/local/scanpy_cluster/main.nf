@@ -20,10 +20,10 @@ process SCANPY_CLUSTER {
     script:
     //TODO: update code to provide parameters
     """
-    #python -m ipykernel install --user --name pipeline_cluster
-    papermill ${qc_nb} pipeline_cluster_out.ipynb
-    jupyter nbextension enable --py widgetsnbextension
-    jupyter nbconvert --to html pipeline_cluster_output.ipynb
+    papermill ${qc_nb} pipeline_cluster_out.ipynb \\
+    -p ensemble_release ${params.ensembl_release} \\
+    -p ensembl_cache ${params.ensembl_cache}
+    jupyter nbconvert --to html pipeline_cluster_out.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')

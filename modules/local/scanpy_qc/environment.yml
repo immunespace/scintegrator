@@ -17,18 +17,24 @@ dependencies:
   - conda-forge::anndata
   - conda-forge::seaborn
   - conda-forge::matplotlib
+  - conda-forge::rpy2
   - bioconda::pyensembl
-  #- bioconda::bioconductor-singler
+  - conda-forge::r-clustree
+  - conda-forge::r-ggplot2
+  - conda-forge::r-cairo
   - conda-forge::scikit-learn
   - conda-forge::numcodecs
   - conda-forge::jupyterlab
-  - conda-forge::jupyterlab_widgets
-  - conda-forge::ipywidgets
-  - conda-forge::widgetsnbextension
+  #- conda-forge::jupyterlab_widgets
+  #- conda-forge::ipywidgets
+  #- conda-forge::widgetsnbextension
   - conda-forge::ipython
+  - conda-forge::poppler
   - conda-forge::pip
   - pip:
     - scimap
     - datacache
     - singler
     - celldex
+    - harmonypy
+    - pdf2image

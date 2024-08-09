@@ -17,4 +17,4 @@ RUN conda env create -f /environment.yml && conda clean -a
 
 ENV PATH /opt/conda/envs/scanpy_qc/bin:$PATH
 
-RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
+#RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
