@@ -19,6 +19,7 @@ dependencies:
   - conda-forge::matplotlib
   - conda-forge::rpy2
   - bioconda::pyensembl
+  - bioconda::scrublet
   - conda-forge::r-clustree
   - conda-forge::r-ggplot2
   - conda-forge::r-cairo
@@ -34,7 +35,7 @@ dependencies:
   - pip:
     - scimap
     - datacache
-    - singler
+    - singler == 0.3.0
     - celldex
     - harmonypy
     - pdf2image

@@ -22,7 +22,8 @@ process SCANPY_CLUSTER {
     """
     papermill ${qc_nb} pipeline_cluster_out.ipynb \\
     -p ensemble_release ${params.ensembl_release} \\
-    -p ensembl_cache ${params.ensembl_cache}
+    -p ensembl_cache ${params.ensembl_cache} \\
+    -p n_neighbors ${params.n_neighbors} \\
     jupyter nbconvert --to html pipeline_cluster_out.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

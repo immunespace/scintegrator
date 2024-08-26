@@ -13,9 +13,6 @@ RUN apt-get update \
 RUN touch .Rprofile
 RUN touch .Renviron
 
-#ensembl
-RUN pip install pyensembl
-RUN pyensembl install --release 111 --species human
 
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
