@@ -24,9 +24,12 @@ process SCANPY_CLUSTER {
     -p ensemble_species ${params.ensembl_species} \\
     -p ensemble_release ${params.ensembl_release} \\
     -p ensembl_cache ${params.ensembl_cache} \\
-    -p n_neighbors ${params.clustering_n_neighbors} \\
-    -p n_pcs ${params.clustering_n_pcs} \\
-    -p resolution ${params.clustering_resolution}
+    -p clustering_n_neighbors ${params.clustering_n_neighbors} \\
+    -p clustering_n_pcs ${params.clustering_n_pcs} \\
+    -p clustering_resolution ${params.clustering_resolution}\\
+    -p hvg_min_mean ${params.hvg_min_mean}\\
+    -p hvg_max_mean ${params.hvg_min_mean}\\
+    -p hvg_min_disp ${params.hvg_min_mean}
     jupyter nbconvert --to html pipeline_cluster_out.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

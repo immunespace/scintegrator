@@ -24,9 +24,9 @@ process SCANPY_QC {
     papermill ${qc_nb} pipeline_QC_output.ipynb \\
     -p species ${params.scanpy_species} \\
     -p min_genes ${params.scanpy_min_genes} \\
-    -p min_cells 5 \\
-    -p pct_mt 15 \\
-    -p total_counts 200
+    -p min_cells ${params.scanpy_min_cells}  \\
+    -p pct_mt ${params.scanpy_pct_mt}  \\
+    -p total_counts ${params.scanpy_total_counts} 
     jupyter nbconvert --to html pipeline_QC_output.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
