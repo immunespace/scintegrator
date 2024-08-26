@@ -21,9 +21,12 @@ process SCANPY_CLUSTER {
     //TODO: update code to provide parameters
     """
     papermill ${qc_nb} pipeline_cluster_out.ipynb \\
+    -p ensemble_species ${params.ensembl_species} \\
     -p ensemble_release ${params.ensembl_release} \\
     -p ensembl_cache ${params.ensembl_cache} \\
-    -p n_neighbors ${params.n_neighbors} \\
+    -p n_neighbors ${params.clustering_n_neighbors} \\
+    -p n_pcs ${params.clustering_n_pcs} \\
+    -p resolution ${params.clustering_resolution}
     jupyter nbconvert --to html pipeline_cluster_out.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

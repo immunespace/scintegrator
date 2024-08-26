@@ -22,7 +22,7 @@ process SCANPY_QC {
     """
     #python -m ipykernel install --user --name pipeline_QC
     papermill ${qc_nb} pipeline_QC_output.ipynb \\
-    -p species human \\
+    -p species ${params.scanpy_species} \\
     -p min_genes ${params.scanpy_min_genes} \\
     -p min_cells 5 \\
     -p pct_mt 15 \\
