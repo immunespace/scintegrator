@@ -23,7 +23,7 @@ process SCANPY_QC {
     #python -m ipykernel install --user --name pipeline_QC
     papermill ${qc_nb} pipeline_QC_out.ipynb \\
     -p scanpy_species ${params.scanpy_species} \\
-    -p expected_doublet_rate ${params.expected_doublet_rate}\\
+    -p expected_doublet_rate ${params.expected_doublet_rate} \\
     -p scanpy_min_genes ${params.scanpy_min_genes} \\
     -p scanpy_min_cells ${params.scanpy_min_cells}  \\
     -p scanpy_pct_mt ${params.scanpy_pct_mt}  \\
