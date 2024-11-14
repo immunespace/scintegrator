@@ -2,7 +2,7 @@ process SCANPY_CLUSTER {
     label 'process_medium'
     //build container under the same folder first with
     // docker build . -t scintegrator/scanpy_cluster:dev
-    container 'docker.io/scintegrator/scanpy_qc:dev'
+    container 'docker.io/immcantation/scintegrator:1.0'
     publishDir "${params.outdir}/scanpy_cluster", mode: 'copy'
 
     input:

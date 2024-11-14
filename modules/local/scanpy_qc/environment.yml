@@ -26,9 +26,6 @@ dependencies:
   - conda-forge::scikit-learn
   - conda-forge::numcodecs
   - conda-forge::jupyterlab
-  #- conda-forge::jupyterlab_widgets
-  #- conda-forge::ipywidgets
-  #- conda-forge::widgetsnbextension
   - conda-forge::ipython
   - conda-forge::poppler
   - conda-forge::pip
