@@ -21,9 +21,8 @@ process SCANPY_CLUSTER {
     //TODO: update code to provide parameters
     """
     papermill ${qc_nb} pipeline_cluster_out.ipynb \\
-    -p ensemble_species ${params.ensembl_species} \\
-    -p ensemble_release ${params.ensembl_release} \\
-    -p ensembl_cache ${params.ensembl_cache} \\
+    -p ensembl_species ${params.ensembl_species} \\
+    -p ensembl_release ${params.ensembl_release} \\
     -p clustering_n_neighbors ${params.clustering_n_neighbors} \\
     -p clustering_n_pcs ${params.clustering_n_pcs} \\
     -p clustering_resolution ${params.clustering_resolution} \\

@@ -46,7 +46,7 @@ workflow SCINTEGRATOR {
         ch_all_h5,
         ch_report_qc.collect()
     )
-    ch_versions = ch_versions.mix(SCANPY_QC.out.versions.first())
+    ch_versions = ch_versions.mix(SCANPY_QC.out.versions)
 
     //
     // MODULE: Run Scanpy clustering
@@ -55,7 +55,7 @@ workflow SCINTEGRATOR {
        SCANPY_QC.out.h5ad,
        ch_report_clustering.collect()
     )
-    ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions.first())
+    ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions)
 
     //
     // Collate and save software versions
