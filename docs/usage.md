@@ -5,6 +5,7 @@
 ## Introduction
 
 <!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
+scintegrator is a pipeline designed to facilitate the integration of single-cell RNA sequencing (scRNA-seq) datasets using the Scanpy framework. It supports various integration methods, quality control, and downstream analysis, providing an efficient and reproducible workflow for scRNA-seq data analysis.
 
 ## Samplesheet input
 
@@ -16,13 +17,13 @@ You will need to create a samplesheet with information about the samples you wou
 
 ### Multiple runs of the same sample
 
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
+The sample column should contain unique identifiers for each sample. The pipeline will use these identifiers during the integration process. Here’s an example of a valid samplesheet:
 
 ```csv title="samplesheet.csv"
 sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
+CB1_day1,SRR18922766_1.fastq.gz,SRR18922766_2.fastq.gz
+CB1_day7,SRR18922765_1.fastq.gz,SRR18922765_1.fastq.gz
+
 ```
 
 ### Full samplesheet
