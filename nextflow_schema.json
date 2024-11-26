@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/immunespace/scintegrator/master/nextflow_schema.json",
     "title": "immunespace/scintegrator pipeline parameters",
     "description": "Workflow to integrate scRNAseq datasets with scanpy",
@@ -284,5 +284,78 @@
         {
             "$ref": "#/definitions/generic_options"
         }
-    ]
+    ],
+    "properties": {
+        "scanpy_species": {
+            "type": "string",
+            "default": "human"
+        },
+        "scanpy_min_genes": {
+            "type": "integer",
+            "default": 300
+        },
+        "scanpy_min_cells": {
+            "type": "integer",
+            "default": 5
+        },
+        "scanpy_pct_mt": {
+            "type": "integer",
+            "default": 20
+        },
+        "scanpy_total_counts": {
+            "type": "integer",
+            "default": 200
+        },
+        "expected_doublet_rate": {
+            "type": "number",
+            "default": 0.06
+        },
+        "ensembl_ig_tr_genes": {
+            "type": "string",
+            "default": "$projectDir/assets/tr_ig_genes_ensembl_v111_human.csv"
+        },
+        "fetch_ensembl_ig_tr_genes": {
+            "type": "boolean"
+        },
+        "ensembl_species": {
+            "type": "string",
+            "default": "human"
+        },
+        "ensembl_release": {
+            "type": "integer",
+            "default": 111
+        },
+        "clustering_n_neighbors": {
+            "type": "integer",
+            "default": 10
+        },
+        "clustering_n_pcs": {
+            "type": "integer",
+            "default": 40
+        },
+        "clustering_resolution": {
+            "type": "number",
+            "default": 0.5
+        },
+        "hvg_min_mean": {
+            "type": "number",
+            "default": 0.0125
+        },
+        "hvg_max_mean": {
+            "type": "integer",
+            "default": 3
+        },
+        "hvg_min_disp": {
+            "type": "number",
+            "default": 0.5
+        },
+        "qc_nb": {
+            "type": "string",
+            "default": "/home/gisela/Projects/scintegrator/assets/pipeline_QC.ipynb"
+        },
+        "cluster_nb": {
+            "type": "string",
+            "default": "/home/gisela/Projects/scintegrator/assets/pipeline_cluster.ipynb"
+        }
+    }
 }

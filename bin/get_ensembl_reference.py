@@ -7,6 +7,8 @@ import argparse
 import pandas as pd
 
 os.environ['CACHE_DIRECTORY'] = '.'
+os.environ['PYENSEMBL_CACHE_DIR'] = '.'
+
 
 parser = argparse.ArgumentParser(description='Get Ensembl reference data.')
 parser.add_argument('--species', type=str, default='human', help='Species name')
