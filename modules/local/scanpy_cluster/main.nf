@@ -8,6 +8,7 @@ process SCANPY_CLUSTER {
     input:
     path(h5ad)
     path(qc_nb)
+    path(ensembl_ig_tr_genes)
 
     output:
     path("*.h5ad"), emit: h5ad
@@ -18,11 +19,9 @@ process SCANPY_CLUSTER {
     task.ext.when == null || task.ext.when
 
     script:
-    //TODO: update code to provide parameters
     """
     papermill ${qc_nb} pipeline_cluster_out.ipynb \\
-    -p ensembl_species ${params.ensembl_species} \\
-    -p ensembl_release ${params.ensembl_release} \\
+    -p ensembl_ig_tr_genes ${ensembl_ig_tr_genes.baseName} \\
     -p clustering_n_neighbors ${params.clustering_n_neighbors} \\
     -p clustering_n_pcs ${params.clustering_n_pcs} \\
     -p clustering_resolution ${params.clustering_resolution} \\

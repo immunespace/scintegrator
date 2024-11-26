@@ -33,11 +33,18 @@ workflow SCINTEGRATOR {
 
 
     ch_samplesheet.dump(tag: "samplesheet")
-                  .map{ it -> it[1] }
-                  .collect()
-                  .dump(tag: "samplesheet-collapsed")
-                  .set{ch_all_h5}
+                    .map{ it -> it[1] }
+                    .collect()
+                    .dump(tag: "samplesheet-collapsed")
+                    .set{ch_all_h5}
 
+    if (params.fetch_ensembl_ig_tr_genes){
+        ENSEMBL_REF()
+        ch_ensembl_ig_tr_genes = ENSEMBL_REF.out.ensembl_tr_ig_genes
+    } else {
+        ch_ensembl_ig_tr_genes = Channel.fromPath("${params.ensembl_ig_tr_genes}")
+                .ifEmpty { error "Ensembl ig tr file not found: ${params.ensembl_ig_tr_genes}" }
+    }
 
     //
     // MODULE: Run Scanpy QC
@@ -52,8 +59,9 @@ workflow SCINTEGRATOR {
     // MODULE: Run Scanpy clustering
     //
     SCANPY_CLUSTER (
-       SCANPY_QC.out.h5ad,
-       ch_report_clustering.collect()
+        SCANPY_QC.out.h5ad,
+        ch_report_clustering.collect(),
+        ch_ensembl_ig_tr_genes
     )
     ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions)
 
