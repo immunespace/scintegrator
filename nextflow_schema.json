@@ -322,8 +322,8 @@
             "default": "human"
         },
         "ensembl_release": {
-            "type": "integer",
-            "default": 111
+            "type": "string",
+            "default": "111"
         },
         "clustering_n_neighbors": {
             "type": "integer",
