@@ -43,7 +43,7 @@ workflow SCINTEGRATOR {
         ENSEMBL_REF()
         ch_ensembl_ig_tr_genes = ENSEMBL_REF.out.ensembl_tr_ig_genes
     } else {
-        ch_ensembl_ig_tr_genes = Channel.fromPath("${params.ensembl_ig_tr_genes}")
+        ch_ensembl_ig_tr_genes = Channel.fromPath(params.ensembl_ig_tr_genes)
                 .ifEmpty { error "Ensembl ig tr file not found: ${params.ensembl_ig_tr_genes}" }
     }
 
