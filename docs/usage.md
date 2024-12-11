@@ -5,6 +5,7 @@
 ## Introduction
 
 <!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
+
 scintegrator is a pipeline designed to facilitate the integration of single-cell RNA sequencing (scRNA-seq) datasets using the Scanpy framework. It supports various integration methods, quality control, and downstream analysis, providing an efficient and reproducible workflow for scRNA-seq data analysis.
 
 ## Samplesheet input

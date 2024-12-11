@@ -27,7 +27,8 @@ process SCANPY_QC {
     -p scanpy_min_genes ${params.scanpy_min_genes} \\
     -p scanpy_min_cells ${params.scanpy_min_cells}  \\
     -p scanpy_pct_mt ${params.scanpy_pct_mt}  \\
-    -p scanpy_total_counts ${params.scanpy_total_counts} 
+    -p scanpy_total_counts ${params.scanpy_total_counts}
+
     jupyter nbconvert --to html pipeline_QC_out.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
