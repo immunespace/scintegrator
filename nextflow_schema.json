@@ -357,5 +357,21 @@
             "type": "string",
             "default": "/home/jian/Desktop/transfer/singlecelldata/scintegrator/assets/pipeline_cluster.ipynb"
         }
-    }
+    },
+    "required": [
+        "scanpy_species",
+        "scanpy_min_genes",
+        "scanpy_min_cells",
+        "scanpy_pct_mt",
+        "scanpy_total_counts",
+        "expected_doublet_rate",
+        "ensembl_species",
+        "ensembl_release",
+        "clustering_n_neighbors",
+        "clustering_n_pcs",
+        "clustering_resolution",
+        "hvg_min_mean",
+        "hvg_max_mean",
+        "hvg_min_disp"
+    ]
 }
