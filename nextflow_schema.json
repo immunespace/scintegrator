@@ -312,7 +312,7 @@
         },
         "ensembl_ig_tr_genes": {
             "type": "string",
-            "default": "$projectDir/assets/tr_ig_genes_ensembl_v111_human.csv"
+            "default": "/home/jian/Desktop/transfer/singlecelldata/scintegrator/assets/tr_ig_genes_ensembl_v111_human.csv"
         },
         "fetch_ensembl_ig_tr_genes": {
             "type": "boolean"
@@ -323,7 +323,7 @@
         },
         "ensembl_release": {
             "type": "string",
-            "default": "111"
+            "default": 111
         },
         "clustering_n_neighbors": {
             "type": "integer",
@@ -351,11 +351,11 @@
         },
         "qc_nb": {
             "type": "string",
-            "default": "/home/gisela/Projects/scintegrator/assets/pipeline_QC.ipynb"
+            "default": "/home/jian/Desktop/transfer/singlecelldata/scintegrator/assets/pipeline_QC.ipynb"
         },
         "cluster_nb": {
             "type": "string",
-            "default": "/home/gisela/Projects/scintegrator/assets/pipeline_cluster.ipynb"
+            "default": "/home/jian/Desktop/transfer/singlecelldata/scintegrator/assets/pipeline_cluster.ipynb"
         }
     }
 }
