@@ -4,7 +4,7 @@
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
-[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
+[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=00S0000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
 [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/immunespace/scintegrator)
 
@@ -13,7 +13,7 @@
 
 ## Introduction
 
-**immunespace/scintegrator** is a bioinformatics pipeline that ...
+**immunespace/scintegrator** * is a bioinformatics pipeline to analyze single-cell RNA-seq (scRNA-seq) data using the **Scanpy** toolkit. It automates key steps of scRNA-seq analysis, such as data preprocessing, integration, clustering, annotation and visualization, enabling efficient and reproducible workflows.
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
@@ -25,8 +25,22 @@
      workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
 <!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
 
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+
+
+### Input Data
+
+Prepare a samplesheet in CSV format with your single-cell expression data. The file should look like this:
+
+`samplesheet.csv`:
+
+```csv
+sample,fastq1,fastq2
+Sample1,sample1_1.fastq,sample1_2.fastq
+Sample2,sample2_1.fastq,sample2_2.fastq
+```
+
+- `sample`: Sample identifiers.
+- `fastq1`: fastq1 file scRNA-seq data.
 
 ## Usage
 
