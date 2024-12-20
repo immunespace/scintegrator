@@ -13,7 +13,7 @@
 
 ## Introduction
 
-**immunespace/scintegrator** * is a bioinformatics pipeline to analyze single-cell RNA-seq (scRNA-seq) data using the **Scanpy** toolkit. It automates key steps of scRNA-seq analysis, such as data preprocessing, integration, clustering, annotation and visualization, enabling efficient and reproducible workflows.
+**immunespace/scintegrator** is a bioinformatics pipeline to analyze single-cell RNA-seq (scRNA-seq) data using the **Scanpy** toolkit. It automates key steps of scRNA-seq analysis, such as data preprocessing, integration, clustering, annotation and visualization, enabling efficient and reproducible workflows.
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
@@ -40,7 +40,8 @@ Sample2,sample2_1.fastq,sample2_2.fastq
 ```
 
 - `sample`: Sample identifiers.
-- `fastq1`: fastq1 file scRNA-seq data.
+- `fastq1`: fastq1 file of scRNA-seq data.
+- `fastq2`: fastq2 file of scRNA-seq data.
 
 ## Usage
 
