@@ -49,11 +49,10 @@ Quality control plot reports.
 
 </details>
 
-[Scanpy_clustering]Clustering and cell annotation reports.
+Clustering and cell annotation reports.
 
-![MultiQC - Scanpy_clustering highly variable genes plot](images/highly_variable_genes.png)
-
-![MultiQC - Scanpy_clustering cell clustering plot](images/clustering.png)
+<img src="images/highly_variable_genes.png" width="400">
+<img src="images/clustering.png" width="400">
 
 
 
