@@ -28,19 +28,14 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 </details>
 
-[Scanpy_QC]Quality control plot reports.
+Quality control plot reports.
 
-![MultiQC - Scanpy_QC cell counts plot](images/cell_count_plot.png)
 
-![MultiQC - Scanpy_QC number of genes plot](images/ngenes_plot.png)
-
-![MultiQC - Scanpy_QC pct mt counts plot](images/pct_counts_mt_plot.png)
-
-![MultiQC - Scanpy_QC totalcounts_ngenes plot](images/totalcounts_ngenes.png)
-
-![MultiQC - Scanpy_QC totalcounts_ngenes plot](images/totalcounts_ngenes.png)
-
-![MultiQC - Scanpy_QC ngenes_pctcountsmt plot](images/ngenes_pctcountsmt.png)
+<img src="images/cell_count_plot.png" width="400">
+<img src="images/ngenes_plot.png" width="400">
+<img src="images/pct_counts_mt_plot.png" width="400">
+<img src="images/totalcounts_ngenes.png" width="400">
+<img src="images/ngenes_pctcountsmt.png" width="400">
 
 
 ### Scanpy_clustering
