@@ -34,14 +34,13 @@ Prepare a samplesheet in CSV format with your single-cell expression data. The f
 `samplesheet.csv`:
 
 ```csv
-sample,fastq1,fastq2
-Sample1,sample1_1.fastq,sample1_2.fastq
-Sample2,sample2_1.fastq,sample2_2.fastq
+sample,path_to_h5_file
+sample1,sample1.h5
+sample2,sample2.h5
 ```
 
 - `sample`: Sample identifiers.
-- `fastq1`: fastq1 file of scRNA-seq data.
-- `fastq2`: fastq2 file of scRNA-seq data.
+- `path_to_h5_file`: h5 file of scRNA-seq data.
 
 ## Usage
 

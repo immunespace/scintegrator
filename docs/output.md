@@ -12,11 +12,12 @@ The directories listed below will be created in the results directory after the 
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-- [FastQC](#fastqc) - Raw read QC
+- [Scanpy_QC](#Scanpy_QC) - Detail the preprocessing steps implemented in Scanpy, including doublet removal, rigorous Quality Control (QC), and the generation of comprehensive plot reports
+- [Scanpy_Clustering](#Scanpy_Cluster) - Scanpy clustering workflow, including data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, and cell type annotation
 - [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
-### FastQC
+### Scanpy_QC
 
 <details markdown="1">
 <summary>Output files</summary>
@@ -27,17 +28,39 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 </details>
 
-[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It provides information about the quality score distribution across your reads, per base sequence content (%A/T/G/C), adapter contamination and overrepresented sequences. For further reading and documentation see the [FastQC help pages](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
+[Scanpy_QC]Quality control plot reports.
 
-![MultiQC - FastQC sequence counts plot](images/mqc_fastqc_counts.png)
+![MultiQC - Scanpy_QC cell counts plot](images/cell_count_plot.png)
 
-![MultiQC - FastQC mean quality scores plot](images/mqc_fastqc_quality.png)
+![MultiQC - Scanpy_QC number of genes plot](images/ngenes_plot.png)
 
-![MultiQC - FastQC adapter content plot](images/mqc_fastqc_adapter.png)
+![MultiQC - Scanpy_QC pct mt counts plot](images/pct_counts_mt_plot.png)
 
-:::note
-The FastQC plots displayed in the MultiQC report shows _untrimmed_ reads. They may contain adapter sequence and potentially regions with low quality.
-:::
+![MultiQC - Scanpy_QC totalcounts_ngenes plot](images/totalcounts_ngenes.png)
+
+![MultiQC - Scanpy_QC totalcounts_ngenes plot](images/totalcounts_ngenes.png)
+
+![MultiQC - Scanpy_QC ngenes_pctcountsmt plot](images/ngenes_pctcountsmt.png)
+
+
+### Scanpy_clustering
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `fastqc/`
+  - `*_fastqc.html`: FastQC report containing quality metrics.
+  - `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
+
+</details>
+
+[Scanpy_clustering]Clustering and cell annotation reports.
+
+![MultiQC - Scanpy_clustering highly variable genes plot](images/highly_variable_genes.png)
+
+![MultiQC - Scanpy_clustering cell clustering plot](images/clustering.png)
+
+
 
 ### MultiQC
 
