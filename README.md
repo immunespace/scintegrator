@@ -103,11 +103,11 @@ nextflow run immunespace/scintegrator \
 
 **Scanpy_QC**
 - --scanpy_species [string] Species of the data. [default: human]
-  --scanpy_min_genes [integer] Minimum number of genes expressed required for a cell to pass filtering. [default: 300]
-  --scanpy_min_cells [integer] Minimum number of cells expressed required for a gene to pass filtering. [default: 5]
-  --scanpy_pct_mt [integer] Minimum number of the total counts required for a cell to pass filtering. [default: 20]
-  --scanpy_total_counts [integer] Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering. [default: 200]
-  --qc_nb [string]  Path to the qc notebook. [default: assets/pipeline_QC.ipynb]
+- --scanpy_min_genes [integer] Minimum number of genes expressed required for a cell to pass filtering. [default: 300]
+- --scanpy_min_cells [integer] Minimum number of cells expressed required for a gene to pass filtering. [default: 5]
+- --scanpy_pct_mt [integer] Minimum number of the total counts required for a cell to pass filtering. [default: 20]
+- --scanpy_total_counts [integer] Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering. [default: 200]
+- --qc_nb [string]  Path to the qc notebook. [default: assets/pipeline_QC.ipynb]
 
 **Scanpy_clustering**
 - --expected_doublet_rate [number]  The estimated doublet rate for the data. [default: 0.06]
