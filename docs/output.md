@@ -2,8 +2,7 @@
 
 ## Introduction
 
-This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarises results at the end of the pipeline.
-
+This document describes the output produced by the pipeline.
 The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
 <!-- TODO nf-core: Write this documentation describing your workflow's output -->
@@ -12,10 +11,10 @@ The directories listed below will be created in the results directory after the 
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-- [Scanpy_QC](#Scanpy_QC) - Detail the preprocessing steps implemented in Scanpy, including doublet removal, rigorous Quality Control (QC), and the generation of comprehensive plot reports
-- [Scanpy_Clustering](#Scanpy_Cluster) - Scanpy clustering workflow, including data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, and cell type annotation
-- [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline
-- [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
+- [Scanpy_QC](#Scanpy_QC) - Detail the preprocessing steps implemented in Scanpy, including doublet removal, rigorous Quality Control (QC), and the generation of comprehensive plot reports.
+- [Scanpy_Clustering](#Scanpy_Cluster) - Scanpy clustering workflow, including data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, and cell type annotation.
+- [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline.
+- [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution.
 
 ### Scanpy_QC
 

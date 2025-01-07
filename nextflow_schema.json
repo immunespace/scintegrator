@@ -5,12 +5,120 @@
     "description": "Workflow to integrate scRNAseq datasets with scanpy",
     "type": "object",
     "definitions": {
+        "scanpy_qc": {
+            "title": "Scanpy_qc",
+            "type": "object",
+            "description": "Sacnpy quality control steps",
+            "default": "",
+            "properties": {
+                "scanpy_species": {
+                    "type": "string",
+                    "default": "human",
+                    "description": "Species of the data."
+                },
+                "scanpy_min_genes": {
+                    "type": "integer",
+                    "default": 300,
+                    "description": "Minimum number of genes expressed required for a cell to pass filtering."
+                },
+                "scanpy_min_cells": {
+                    "type": "integer",
+                    "default": 5,
+                    "description": "Minimum number of cells expressed required for a gene to pass filtering."
+                },
+                "scanpy_pct_mt": {
+                    "type": "integer",
+                    "default": 20,
+                    "description": "Minimum number of the total counts required for a cell to pass filtering."
+                },
+                "scanpy_total_counts": {
+                    "type": "integer",
+                    "default": 200,
+                    "description": "Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering."
+                },
+                "qc_nb": {
+                    "type": "string",
+                    "default": "assets/pipeline_QC.ipynb",
+                    "description": "Path to the qc notebook."
+                }
+            }
+        },
+        "scanpy_clustering": {
+            "title": "Scanpy_clustering",
+            "type": "object",
+            "description": "Sacnpy clustering steps",
+            "default": "",
+            "properties": {
+                "expected_doublet_rate": {
+                    "type": "number",
+                    "default": 0.06,
+                    "description": "The estimated doublet rate for the data."
+                },
+                "ensembl_ig_tr_genes": {
+                    "type": "string",
+                    "default": "assets/tr_ig_genes_ensembl_v111_human.csv",
+                    "description": "Immunogloblin (IG) and T cell receptor (TR) genes list."
+                },
+                "fetch_ensembl_ig_tr_genes": {
+                    "type": "boolean",
+                    "hidden": true
+                },
+                "ensembl_species": {
+                    "type": "string",
+                    "default": "human",
+                    "description": "Species of the data."
+                },
+                "ensembl_release": {
+                    "type": "string",
+                    "default": 111,
+                    "hidden": true
+                },
+                "clustering_n_neighbors": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Size of local neighborhood used for manifold approximation."
+                },
+                "clustering_n_pcs": {
+                    "type": "integer",
+                    "default": 40,
+                    "description": "Number of PCs."
+                },
+                "clustering_resolution": {
+                    "type": "number",
+                    "default": 0.5,
+                    "description": "The resolution of the clustering."
+                },
+                "hvg_min_mean": {
+                    "type": "number",
+                    "default": 0.0125,
+                    "description": "Cutoff for the min means."
+                },
+                "hvg_max_mean": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "Cutoff for the max means."
+                },
+                "hvg_min_disp": {
+                    "type": "number",
+                    "default": 0.5,
+                    "description": "Cutoff for the normalized dispersions."
+                },
+                "cluster_nb": {
+                    "type": "string",
+                    "default": "assets/pipeline_cluster.ipynb",
+                    "description": "Path to the clustering notebook."
+                }
+            }
+        },
         "input_output_options": {
             "title": "Input/output options",
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["input", "outdir"],
+            "required": [
+                "input",
+                "outdir"
+            ],
             "properties": {
                 "input": {
                     "type": "string",
@@ -52,7 +160,8 @@
                     "type": "string",
                     "description": "Name of iGenomes reference.",
                     "fa_icon": "fas fa-book",
-                    "help_text": "If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. `--genome GRCh38`. \n\nSee the [nf-core website docs](https://nf-co.re/usage/reference_genomes) for more details."
+                    "help_text": "If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. `--genome GRCh38`. \n\nSee the [nf-core website docs](https://nf-co.re/usage/reference_genomes) for more details.",
+                    "hidden": true
                 },
                 "fasta": {
                     "type": "string",
@@ -62,7 +171,8 @@
                     "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
                     "description": "Path to FASTA genome file.",
                     "help_text": "This parameter is *mandatory* if `--genome` is not specified. If you don't have a BWA index available this will be generated for you automatically. Combine with `--save_reference` to save BWA index for future runs.",
-                    "fa_icon": "far fa-file-code"
+                    "fa_icon": "far fa-file-code",
+                    "hidden": true
                 },
                 "igenomes_ignore": {
                     "type": "boolean",
@@ -181,7 +291,14 @@
                     "description": "Method used to save pipeline results to output directory.",
                     "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
                     "fa_icon": "fas fa-copy",
-                    "enum": ["symlink", "rellink", "link", "copy", "copyNoFollow", "move"],
+                    "enum": [
+                        "symlink",
+                        "rellink",
+                        "link",
+                        "copy",
+                        "copyNoFollow",
+                        "move"
+                    ],
                     "hidden": true
                 },
                 "email_on_fail": {
@@ -270,108 +387,25 @@
     },
     "allOf": [
         {
-            "$ref": "#/definitions/input_output_options"
+            "$ref": "#/$defs/scanpy_clustering"
         },
         {
-            "$ref": "#/definitions/reference_genome_options"
+            "$ref": "#/$defs/scanpy_qc"
         },
         {
-            "$ref": "#/definitions/institutional_config_options"
+            "$ref": "#/$defs/input_output_options"
         },
         {
-            "$ref": "#/definitions/max_job_request_options"
+            "$ref": "#/$defs/reference_genome_options"
         },
         {
-            "$ref": "#/definitions/generic_options"
+            "$ref": "#/$defs/institutional_config_options"
+        },
+        {
+            "$ref": "#/$defs/max_job_request_options"
+        },
+        {
+            "$ref": "#/$defs/generic_options"
         }
-    ],
-    "properties": {
-        "scanpy_species": {
-            "type": "string",
-            "default": "human"
-        },
-        "scanpy_min_genes": {
-            "type": "integer",
-            "default": 300
-        },
-        "scanpy_min_cells": {
-            "type": "integer",
-            "default": 5
-        },
-        "scanpy_pct_mt": {
-            "type": "integer",
-            "default": 20
-        },
-        "scanpy_total_counts": {
-            "type": "integer",
-            "default": 200
-        },
-        "expected_doublet_rate": {
-            "type": "number",
-            "default": 0.06
-        },
-        "ensembl_ig_tr_genes": {
-            "type": "string",
-            "default": "/home/jian/Desktop/transfer/singlecelldata/scintegrator/assets/tr_ig_genes_ensembl_v111_human.csv"
-        },
-        "fetch_ensembl_ig_tr_genes": {
-            "type": "boolean"
-        },
-        "ensembl_species": {
-            "type": "string",
-            "default": "human"
-        },
-        "ensembl_release": {
-            "type": "string",
-            "default": 111
-        },
-        "clustering_n_neighbors": {
-            "type": "integer",
-            "default": 10
-        },
-        "clustering_n_pcs": {
-            "type": "integer",
-            "default": 40
-        },
-        "clustering_resolution": {
-            "type": "number",
-            "default": 0.5
-        },
-        "hvg_min_mean": {
-            "type": "number",
-            "default": 0.0125
-        },
-        "hvg_max_mean": {
-            "type": "integer",
-            "default": 3
-        },
-        "hvg_min_disp": {
-            "type": "number",
-            "default": 0.5
-        },
-        "qc_nb": {
-            "type": "string",
-            "default": "/home/jian/Desktop/transfer/singlecelldata/scintegrator/assets/pipeline_QC.ipynb"
-        },
-        "cluster_nb": {
-            "type": "string",
-            "default": "/home/jian/Desktop/transfer/singlecelldata/scintegrator/assets/pipeline_cluster.ipynb"
-        }
-    },
-    "required": [
-        "scanpy_species",
-        "scanpy_min_genes",
-        "scanpy_min_cells",
-        "scanpy_pct_mt",
-        "scanpy_total_counts",
-        "expected_doublet_rate",
-        "ensembl_species",
-        "ensembl_release",
-        "clustering_n_neighbors",
-        "clustering_n_pcs",
-        "clustering_resolution",
-        "hvg_min_mean",
-        "hvg_max_mean",
-        "hvg_min_disp"
     ]
 }
