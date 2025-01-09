@@ -387,25 +387,25 @@
     },
     "allOf": [
         {
-            "$ref": "#/$defs/scanpy_clustering"
+            "$ref": "#/definitions/scanpy_clustering"
         },
         {
-            "$ref": "#/$defs/scanpy_qc"
+            "$ref": "#/definitions/scanpy_qc"
         },
         {
-            "$ref": "#/$defs/input_output_options"
+            "$ref": "#/definitions/input_output_options"
         },
         {
-            "$ref": "#/$defs/reference_genome_options"
+            "$ref": "#/definitions/reference_genome_options"
         },
         {
-            "$ref": "#/$defs/institutional_config_options"
+            "$ref": "#/definitions/institutional_config_options"
         },
         {
-            "$ref": "#/$defs/max_job_request_options"
+            "$ref": "#/definitions/max_job_request_options"
         },
         {
-            "$ref": "#/$defs/generic_options"
+            "$ref": "#/definitions/generic_options"
         }
     ]
 }
