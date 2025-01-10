@@ -27,21 +27,12 @@ Each of these steps in scintegration pipeline is customizable, allowing research
   - Data Integration: Integrate data from different batches or experiments to correct for variations not related to biological differences using Harmony.
   - Annotation: Annotate identified clusters to known cell types based on marker gene expression.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+## Quickstart
 
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
+> [!NOTE]
+> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow and a container engine such as docker or apptainer. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-
-
-### Input Data
-
-Prepare a samplesheet in CSV format with your single-cell expression data. The file should look like this:
+First, prepare a samplesheet in CSV format with your single-cell expression data in `h5` format. The file should look like this:
 
 `samplesheet.csv`:
 
@@ -54,30 +45,8 @@ sample2,sample2.h5
 - `sample`: Sample identifiers.
 - `path_to_h5_file`: h5 file of scRNA-seq data.
 
-## Usage
-
-> [!NOTE]
-> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
-
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
-
-First, prepare a samplesheet with your input data that looks as follows:
-
-`samplesheet.csv`:
-
-```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-```
-
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
-
--->
 
 Now, you can run the pipeline using:
-
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
 
 ```bash
 nextflow run immunespace/scintegrator \
@@ -86,11 +55,15 @@ nextflow run immunespace/scintegrator \
    --outdir <OUTDIR>
 ```
 
+For further usage details, please refer to the [Usage](./docs/usage.md) documentation.
+To understand the pipeline outputs, please refer to the [Output](./docs/output.md) documentation.
+A full list of the pipeline parameters is available in the next section.
+
+### Parameters
+
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_
 > see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
-
-### Parameters
 
 **Scanpy_QC**
 - --scanpy_species [string] Species of the data. [default: human]
@@ -126,9 +99,7 @@ nextflow run immunespace/scintegrator \
 
 immunespace/scintegrator was originally written by Jian Xing, Gisela Gabernet.
 
-We thank the following people for their extensive assistance in the development of this pipeline:
-
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
+<!-- We thank the following people for their extensive assistance in the development of this pipeline: -->
 
 ## Contributions and Support
 
