@@ -30,9 +30,9 @@ dependencies:
   - conda-forge::poppler
   - conda-forge::pip
   - pip:
-    - scimap
-    - datacache
-    - singler == 0.3.0
-    - celldex
-    - harmonypy
-    - pdf2image
+      - scimap
+      - datacache
+      - singler == 0.3.0
+      - celldex
+      - harmonypy
+      - pdf2image

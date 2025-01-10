@@ -1,4 +1,4 @@
-# immunespace/scintegrator: Documentation
+S# immunespace/scintegrator: Documentation
 
 The immunespace/scintegrator documentation is split into the following pages:
 

@@ -1,19 +1,31 @@
 [![GitHub Actions CI Status](https://github.com/immunespace/scintegrator/actions/workflows/ci.yml/badge.svg)](https://github.com/immunespace/scintegrator/actions/workflows/ci.yml)
-[![GitHub Actions Linting Status](https://github.com/immunespace/scintegrator/actions/workflows/linting.yml/badge.svg)](https://github.com/immunespace/scintegrator/actions/workflows/linting.yml)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
-[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
-
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
-[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
-[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
+[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=00SSS0000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/immunespace/scintegrator)
-
-> [!WARNING]
-> This pipeline is still under construction and should not be used
 
 ## Introduction
 
-**immunespace/scintegrator** is a bioinformatics pipeline that ...
+**immunespace/scintegrator** is a bioinformatics pipeline to analyze single-cell RNA-seq (scRNA-seq) data using the **Scanpy** toolkit. It automates key steps of scRNA-seq analysis, such as data preprocessing, integration, clustering, annotation and visualization, enabling efficient and reproducible workflows.
+
+## Pipeline summary
+
+Each of these steps in scintegration pipeline is customizable, allowing researchers to adjust parameters based on the specific characteristics of their dataset and research questions.
+
+- **Scanpy_QC** - Detail the preprocessing steps implemented in Scanpy, including doublet removal, rigorous Quality Control (QC), and the generation of comprehensive plot reports.
+  - Cell Filtering: Remove cells that do not meet certain quality metrics, such as a minimum number of genes expressed or an excessive percentage of mitochondrial gene expression.
+  - Gene Filtering: Exclude genes that are not detected in a sufficient number of cells, which helps in focusing the analysis on biologically relevant data.
+  - Doublet Detection: Use Scrublet to identify and remove potential doublets from the data, ensuring that each cell analyzed represents a single biological cell.
+  - Data Summarization: Generate plots of quality metrics to visually assess the quality of the data and the effectiveness of preprocessing steps.
+
+- **Scanpy_Clustering** - Scanpy clustering workflow, including data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, data integrtion and cell type annotation.
+  - Removal of TR and IG Genes: Exclude T-cell receptor (TR) and immunoglobulin (IG) genes which can skew analysis due to their high variability and cell-type specific expression.
+  - Data Normalization: Normalize data to make the gene expression profiles more comparable across cells.
+  - Log Transformation: Apply log transformation to normalize the distribution of gene expression data.
+  - Highly Variable Genes (HVGs) Identification: Select genes with high variability across cells which are informative for clustering.
+  - Principal Component Analysis (PCA): Reduce dimensionality of the dataset to capture the most significant gene expression changes.
+  - Clustering: Group cells based on similarities in their gene expression profiles using algorithms like Leiden or Louvain.
+  - Data Integration: Integrate data from different batches or experiments to correct for variations not related to biological differences using Harmony.
+  - Annotation: Annotate identified clusters to known cell types based on marker gene expression.
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
@@ -25,8 +37,22 @@
      workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
 <!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
 
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+
+
+### Input Data
+
+Prepare a samplesheet in CSV format with your single-cell expression data. The file should look like this:
+
+`samplesheet.csv`:
+
+```csv
+sample,path_to_h5_file
+sample1,sample1.h5
+sample2,sample2.h5
+```
+
+- `sample`: Sample identifiers.
+- `path_to_h5_file`: h5 file of scRNA-seq data.
 
 ## Usage
 
@@ -63,6 +89,38 @@ nextflow run immunespace/scintegrator \
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_
 > see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
+
+### Parameters
+
+**Scanpy_QC**
+- --scanpy_species [string] Species of the data. [default: human]
+- --scanpy_min_genes [integer] Minimum number of genes expressed required for a cell to pass filtering. [default: 300]
+- --scanpy_min_cells [integer] Minimum number of cells expressed required for a gene to pass filtering. [default: 5]
+- --scanpy_pct_mt [integer] Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering.  [default: 20]
+- --scanpy_total_counts [integer] Minimum number of the total counts required for a cell to pass filtering. [default: 200]
+- --qc_nb [string]  Path to the qc notebook. [default: assets/pipeline_QC.ipynb]
+
+**Scanpy_clustering**
+- --expected_doublet_rate [number]  The estimated doublet rate for the data. [default: 0.06]
+- --ensembl_ig_tr_genes [string]  Immunogloblin (IG) and T cell receptor (TR) genes list. [default: assets/tr_ig_genes_ensembl_v111_human.csv]
+- --ensembl_species [string]  Species of the data. [default: human]
+- --clustering_n_neighbors [integer] Size of local neighborhood used for manifold approximation. [default: 10]
+- --clustering_n_pcs [integer] Number of PCs. [default: 40]
+- --clustering_resolution [number]  The resolution of the clustering. [default: 0.5]
+- --hvg_min_mean [number]  Cutoff for the min means. [default: 0.0125]
+- --hvg_max_mean [integer] Cutoff for the max means. [default: 3]
+- --hvg_min_disp [number]  Cutoff for the normalized dispersions. [default: 0.5]
+- --cluster_nb [string]  Path to the clustering notebook. [default: assets/pipeline_cluster.ipynb]
+
+**Input/output options**
+- --input [string]  Path to comma-separated file containing information about the samples in the experiment.
+- --outdir [string]  The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.
+- --email [string]  Email address for completion summary.
+- --multiqc_title [string]  MultiQC report title. Printed as page header, used for filename if not otherwise specified.
+
+**Generic options**
+- --multiqc_methods_description [string]  Custom MultiQC yaml file containing HTML including a methods description.
+
 
 ## Credits
 

@@ -2,8 +2,7 @@
 
 ## Introduction
 
-This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarises results at the end of the pipeline.
-
+This document describes the output produced by the pipeline.
 The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
 <!-- TODO nf-core: Write this documentation describing your workflow's output -->
@@ -12,32 +11,63 @@ The directories listed below will be created in the results directory after the 
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-- [FastQC](#fastqc) - Raw read QC
-- [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline
-- [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
+- [Scanpy_QC](#Scanpy_QC) - Detail the preprocessing steps implemented in Scanpy, including doublet removal, rigorous Quality Control (QC), and the generation of comprehensive plot reports.
+- [Scanpy_Clustering](#Scanpy_Cluster) - Scanpy clustering workflow, including data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, and cell type annotation.
+- [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline.
+- [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution.
 
-### FastQC
+### Scanpy_QC
 
 <details markdown="1">
 <summary>Output files</summary>
 
-- `fastqc/`
-  - `*_fastqc.html`: FastQC report containing quality metrics.
-  - `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
+- `assets/`
+  - `pipeline_QC.ipynb`: Quality control plot reports.
 
 </details>
 
-[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It provides information about the quality score distribution across your reads, per base sequence content (%A/T/G/C), adapter contamination and overrepresented sequences. For further reading and documentation see the [FastQC help pages](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
+Quality control plot reports.
 
-![MultiQC - FastQC sequence counts plot](images/mqc_fastqc_counts.png)
+#### Cell Count Plot
+This plot visualizes the count of cells analyzed across different samples after after cell filtering that do not meet certain quality metrics, such as a minimum number of genes expressed or an excessive percentage of mitochondrial gene expression.
+<img src="images/cell_count_plot.png" width="400">
 
-![MultiQC - FastQC mean quality scores plot](images/mqc_fastqc_quality.png)
+#### Number of Genes per Cell Plot
+This plot shows the distribution of the number of genes detected in each cell across different samples after excluding genes that are not detected in a sufficient number of cells.
+<img src="images/ngenes_plot.png" width="400">
 
-![MultiQC - FastQC adapter content plot](images/mqc_fastqc_adapter.png)
+#### Percentage of Mitochondrial Genes Plot
+This plot displays the percentage of mitochondrial genes found in each cell across samples after filtering the cells with high percentage of mitochondrial genes.
 
-:::note
-The FastQC plots displayed in the MultiQC report shows _untrimmed_ reads. They may contain adapter sequence and potentially regions with low quality.
-:::
+<img src="images/pct_counts_mt_plot.png" width="400">
+
+#### Total Counts vs. Number of Genes
+This plot visualizes the relationship between the total number of transcript counts and the number of genes detected of the cells across samples that have passed all quality controls.
+<img src="images/totalcounts_ngenes.png" width="400">
+
+#### Number of Genes vs. Percentage of Mitochondrial Genes
+This plot compares the number of genes per cell with the percentage of mitochondrial genes across samples that have passed all quality controls.
+<img src="images/ngenes_pctcountsmt.png" width="400">
+
+
+### Scanpy_clustering
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `assets/`
+  - `pipeline_cluster.ipynb`: Clustering and ce;; annottation reports.
+
+</details>
+
+Scanpy clustering performs data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, data integrtion and cell type annotation.
+
+Highly variable genes identification, clustering and cell annotation plots.
+
+<img src="images/highly_variable_genes.png" width="400">
+<img src="images/clustering.png" width="400">
+
+
 
 ### MultiQC
 
