@@ -16,18 +16,6 @@ You will need to create a samplesheet with information about the samples you wou
 --input '[path to samplesheet file]'
 ```
 
-### Multiple runs of the same sample
-
-The sample column should contain unique identifiers for each sample. The pipeline will use these identifiers during the integration process. Here’s an example of a valid samplesheet:
-
-```csv title="samplesheet.csv"
-
-sample,path_to_h5_file
-sample1,sample1.h5
-sample2,sample2.h5
-
-```
-
 ### Full samplesheet
 
 The sample column should contain unique identifiers for each sample. The pipeline will use these identifiers during the integration process.The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 2 columns to match those defined in the table below.

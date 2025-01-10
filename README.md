@@ -14,7 +14,7 @@ Each of these steps in scintegration pipeline is customizable, allowing research
 - **Scanpy_QC** - Detail the preprocessing steps implemented in Scanpy, including doublet removal, rigorous Quality Control (QC), and the generation of comprehensive plot reports.
   - Cell Filtering: Remove cells that do not meet certain quality metrics, such as a minimum number of genes expressed or an excessive percentage of mitochondrial gene expression.
   - Gene Filtering: Exclude genes that are not detected in a sufficient number of cells, which helps in focusing the analysis on biologically relevant data.
-  - Doublet Detection: Use tools like Scrublet to identify and remove potential doublets from the data, ensuring that each cell analyzed represents a single biological cell.
+  - Doublet Detection: Use Scrublet to identify and remove potential doublets from the data, ensuring that each cell analyzed represents a single biological cell.
   - Data Summarization: Generate plots of quality metrics to visually assess the quality of the data and the effectiveness of preprocessing steps.
 
 - **Scanpy_Clustering** - Scanpy clustering workflow, including data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, data integrtion and cell type annotation.
@@ -24,8 +24,7 @@ Each of these steps in scintegration pipeline is customizable, allowing research
   - Highly Variable Genes (HVGs) Identification: Select genes with high variability across cells which are informative for clustering.
   - Principal Component Analysis (PCA): Reduce dimensionality of the dataset to capture the most significant gene expression changes.
   - Clustering: Group cells based on similarities in their gene expression profiles using algorithms like Leiden or Louvain.
-  - Data Integration: Integrate data from different batches or experiments to correct for variations not related to biological differences.
-
+  - Data Integration: Integrate data from different batches or experiments to correct for variations not related to biological differences using Harmony.
   - Annotation: Annotate identified clusters to known cell types based on marker gene expression.
 
 <!-- TODO nf-core:
@@ -97,8 +96,8 @@ nextflow run immunespace/scintegrator \
 - --scanpy_species [string] Species of the data. [default: human]
 - --scanpy_min_genes [integer] Minimum number of genes expressed required for a cell to pass filtering. [default: 300]
 - --scanpy_min_cells [integer] Minimum number of cells expressed required for a gene to pass filtering. [default: 5]
-- --scanpy_pct_mt [integer] Minimum number of the total counts required for a cell to pass filtering. [default: 20]
-- --scanpy_total_counts [integer] Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering. [default: 200]
+- --scanpy_pct_mt [integer] Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering.  [default: 20]
+- --scanpy_total_counts [integer] Minimum number of the total counts required for a cell to pass filtering. [default: 200]
 - --qc_nb [string]  Path to the qc notebook. [default: assets/pipeline_QC.ipynb]
 
 **Scanpy_clustering**

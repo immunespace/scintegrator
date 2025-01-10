@@ -29,12 +29,12 @@
                 "scanpy_pct_mt": {
                     "type": "integer",
                     "default": 20,
-                    "description": "Minimum number of the total counts required for a cell to pass filtering."
+                    "description": "Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering." 
                 },
                 "scanpy_total_counts": {
                     "type": "integer",
                     "default": 200,
-                    "description": "Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering."
+                    "description": "Minimum number of the total counts required for a cell to pass filtering."
                 },
                 "qc_nb": {
                     "type": "string",

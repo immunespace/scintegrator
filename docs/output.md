@@ -21,19 +21,32 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <details markdown="1">
 <summary>Output files</summary>
 
-- `fastqc/`
-  - `*_fastqc.html`: FastQC report containing quality metrics.
-  - `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
+- `assets/`
+  - `pipeline_QC.ipynb`: Quality control plot reports.
 
 </details>
 
 Quality control plot reports.
 
-
+#### Cell Count Plot
+This plot visualizes the count of cells analyzed across different samples after after cell filtering that do not meet certain quality metrics, such as a minimum number of genes expressed or an excessive percentage of mitochondrial gene expression.
 <img src="images/cell_count_plot.png" width="400">
+
+#### Number of Genes per Cell Plot
+This plot shows the distribution of the number of genes detected in each cell across different samples after excluding genes that are not detected in a sufficient number of cells.
 <img src="images/ngenes_plot.png" width="400">
+
+#### Percentage of Mitochondrial Genes Plot
+This plot displays the percentage of mitochondrial genes found in each cell across samples after filtering the cells with high percentage of mitochondrial genes.
+
 <img src="images/pct_counts_mt_plot.png" width="400">
+
+#### Total Counts vs. Number of Genes
+This plot visualizes the relationship between the total number of transcript counts and the number of genes detected of the cells across samples that have passed all quality controls.
 <img src="images/totalcounts_ngenes.png" width="400">
+
+#### Number of Genes vs. Percentage of Mitochondrial Genes
+This plot compares the number of genes per cell with the percentage of mitochondrial genes across samples that have passed all quality controls.
 <img src="images/ngenes_pctcountsmt.png" width="400">
 
 
@@ -42,13 +55,14 @@ Quality control plot reports.
 <details markdown="1">
 <summary>Output files</summary>
 
-- `fastqc/`
-  - `*_fastqc.html`: FastQC report containing quality metrics.
-  - `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
+- `assets/`
+  - `pipeline_cluster.ipynb`: Clustering and ce;; annottation reports.
 
 </details>
 
-Clustering and cell annotation reports.
+Scanpy clustering performs data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, data integrtion and cell type annotation.
+
+Highly variable genes identification, clustering and cell annotation plots.
 
 <img src="images/highly_variable_genes.png" width="400">
 <img src="images/clustering.png" width="400">
