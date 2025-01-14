@@ -46,9 +46,9 @@ Prepare a samplesheet in CSV format with your single-cell expression data. The f
 `samplesheet.csv`:
 
 ```csv
-sample,path_to_h5_file
-sample1,sample1.h5
-sample2,sample2.h5
+sample,path_to_h5_file,study_id
+sample1,sample1.h5,test
+sample2,sample2.h5 test
 ```
 
 - `sample`: Sample identifiers.
