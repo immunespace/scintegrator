@@ -24,9 +24,9 @@ Here’s an example of a valid samplesheet:
 
 ```csv title="samplesheet.csv"
 
-sample,path_to_h5_file
-sample1,sample1.h5
-sample2,sample2.h5
+sample,path_to_h5_file,study_id
+sample1,sample1.h5,test
+sample2,sample2.h5,test
 
 ```
 
