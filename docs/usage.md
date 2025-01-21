@@ -33,7 +33,8 @@ sample2,sample2.h5,test
 | Column    | Description                                                                                                                                                                            |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `path_to_h5_file` | Full path to h5 file of scRNA-seq data.                                                            |
+| `path_to_h5_file` | Full path to h5 file of scRNA-seq data. |
+| `study_id` | Cumstom study name of the experiment. |
                                                            |
 
 An [example samplesheet](../assets/test_samplesheet.csv) has been provided with the pipeline.

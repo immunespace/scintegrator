@@ -44,6 +44,7 @@ sample2,sample2.h5,test
 
 - `sample`: Sample identifiers.
 - `path_to_h5_file`: h5 file of scRNA-seq data.
+- `study_id`: Cumstom study name. 
 
 
 Now, you can run the pipeline using:
