@@ -44,7 +44,7 @@ An [example samplesheet](../assets/test_samplesheet.csv) has been provided with 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run immunespace/scintegrator --input ./samplesheet.csv --outdir ./results --genome GRCh37 -profile docker
+nextflow run immunespace/scintegrator --input ./samplesheet.csv --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
