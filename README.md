@@ -37,13 +37,13 @@ First, prepare a samplesheet in CSV format with your single-cell expression data
 `samplesheet.csv`:
 
 ```csv
-sample,path_to_h5_file,study_id
+sample_id,path,study_id
 sample1,sample1.h5,test
 sample2,sample2.h5,test
 ```
 
 - `sample`: Sample identifiers.
-- `path_to_h5_file`: h5 file of scRNA-seq data.
+- `path`: path to h5 file of scRNA-seq data.
 - `study_id`: Cumstom study name. 
 
 
