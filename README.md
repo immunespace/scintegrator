@@ -32,7 +32,7 @@ Each of these steps in scintegration pipeline is customizable, allowing research
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow and a container engine such as docker or apptainer. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-First, prepare a samplesheet in CSV format with your single-cell expression data in `h5` format. The file should look like this:
+First, prepare a samplesheet in CSV format with your single-cell expression data in `h5` format which is the output file of CellRanger. The file should look like this:
 
 `samplesheet.csv`:
 
