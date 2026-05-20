@@ -28,11 +28,13 @@ dependencies:
   - conda-forge::jupyterlab
   - conda-forge::ipython
   - conda-forge::poppler
+  - conda-forge::cmake
   - conda-forge::pip
+  - bioconda::celltypist
   - pip:
       - scimap
       - datacache
-      - singler == 0.3.0
+      - singler
       - celldex
       - harmonypy
       - pdf2image

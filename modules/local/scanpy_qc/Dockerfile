@@ -5,6 +5,7 @@ LABEL description="Docker image containing all requirements for the nfcore/rnase
 # Update system packages and install dependencies
 RUN apt-get update \
     && apt-get install -y procps \
+    && apt-get install -y procps g++ \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 
