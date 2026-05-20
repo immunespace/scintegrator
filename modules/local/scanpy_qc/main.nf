@@ -3,7 +3,7 @@ process SCANPY_QC {
 
     //build container under the same folder first with
     // docker build . -t scintegrator/scanpy_qc:dev
-    container 'docker.io/immcantation/scintegrator:1.0'
+    container 'docker.io/immcantation/scintegrator:1.1'
     publishDir "${params.outdir}/scanpy_qc", mode: 'copy'
 
     input:
