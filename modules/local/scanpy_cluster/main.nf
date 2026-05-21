@@ -5,6 +5,8 @@ process SCANPY_CLUSTER {
     container 'docker.io/immcantation/scintegrator:1.1'
     publishDir "${params.outdir}/scanpy_cluster", mode: 'copy'
 
+    environment 'CELLTYPIST_FOLDER=/tmp/celltypist'    // ← add this
+
     input:
     path(h5ad)
     path(qc_nb)
@@ -28,7 +30,7 @@ process SCANPY_CLUSTER {
     -p hvg_min_mean ${params.hvg_min_mean} \\
     -p hvg_max_mean ${params.hvg_max_mean} \\
     -p hvg_min_disp ${params.hvg_min_disp} \\
-    -p model ${params.model}
+    -p Anno_model ${params.Anno_model}
     jupyter nbconvert --to html pipeline_cluster_out.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
