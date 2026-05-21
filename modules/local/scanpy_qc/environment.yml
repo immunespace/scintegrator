@@ -6,6 +6,7 @@ channels:
 
 dependencies:
   - conda-forge::python=3.10.12
+  - conda-forge::setuptools
   - r-base=4.2
   - r-essentials
   - conda-forge::scanpy
