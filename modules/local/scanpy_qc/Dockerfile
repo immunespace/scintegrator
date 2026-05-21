@@ -18,4 +18,14 @@ RUN touch .Renviron
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 
+RUN /opt/conda/envs/scanpy_qc/bin/pip install \
+    --force-reinstall \
+    --no-deps \
+    --no-cache-dir \
+    "setuptools==70.3.0"
+
+RUN /opt/conda/envs/scanpy_qc/bin/python -c \
+    "import pkg_resources; print('pkg_resources OK')" && \
+    ls /opt/conda/envs/scanpy_qc/lib/python3.10/site-packages/pkg_resources/
+
 ENV PATH /opt/conda/envs/scanpy_qc/bin:$PATH

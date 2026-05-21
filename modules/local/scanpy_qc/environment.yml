@@ -6,7 +6,7 @@ channels:
 
 dependencies:
   - conda-forge::python=3.10.12
-  - conda-forge::setuptools
+  - conda-forge::setuptools=70.3.0
   - r-base=4.2
   - r-essentials
   - conda-forge::scanpy
@@ -33,6 +33,7 @@ dependencies:
   - conda-forge::pip
   - bioconda::celltypist
   - pip:
+      - mpl-scatter-density
       - scimap
       - datacache
       - singler
