@@ -5,8 +5,6 @@ process SCANPY_CLUSTER {
     container 'docker.io/immcantation/scintegrator:1.1'
     publishDir "${params.outdir}/scanpy_cluster", mode: 'copy'
 
-    environment 'CELLTYPIST_FOLDER=/tmp/celltypist'    // ← add this
-
     input:
     path(h5ad)
     path(qc_nb)
@@ -22,6 +20,9 @@ process SCANPY_CLUSTER {
 
     script:
     """
+    export CELLTYPIST_FOLDER=/tmp/celltypist
+    mkdir -p /tmp/celltypist
+
     papermill ${qc_nb} pipeline_cluster_out.ipynb \\
     -p ensembl_ig_tr_genes ${ensembl_ig_tr_genes.baseName} \\
     -p clustering_n_neighbors ${params.clustering_n_neighbors} \\
