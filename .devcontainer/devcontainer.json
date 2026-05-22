@@ -1,20 +1,26 @@
 {
-    "name": "nfcore",
-    "image": "nfcore/gitpod:latest",
-    "remoteUser": "gitpod",
-    "runArgs": ["--privileged"],
-
-    // Configure tool-specific properties.
+    "name": "scintegrator",
+    "image": "docker.io/immcantation/scintegrator:1.1",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
     "customizations": {
-        // Configure properties specific to VS Code.
         "vscode": {
-            // Set *default* container specific settings.json values on container create.
+            "extensions": [
+                "ms-python.python",
+                "ms-toolsai.jupyter",
+                "nextflow.nextflow",
+                "ms-azuretools.vscode-docker"
+            ],
             "settings": {
-                "python.defaultInterpreterPath": "/opt/conda/bin/python"
-            },
-
-            // Add the IDs of extensions you want installed when the container is created.
-            "extensions": ["ms-python.python", "ms-python.vscode-pylance", "nf-core.nf-core-extensionpack"]
+                "python.defaultInterpreterPath": "/opt/conda/envs/scanpy_qc/bin/python",
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
         }
+    },
+    "postCreateCommand": "conda activate scanpy_qc",
+    "remoteEnv": {
+        "CELLTYPIST_FOLDER": "/tmp/celltypist"
     }
 }
