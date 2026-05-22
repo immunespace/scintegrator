@@ -25,7 +25,7 @@ Each of these steps in scintegration pipeline is customizable, allowing research
   - Principal Component Analysis (PCA): Reduce dimensionality of the dataset to capture the most significant gene expression changes.
   - Clustering: Group cells based on similarities in their gene expression profiles using algorithms like Leiden or Louvain.
   - Data Integration: Integrate data from different batches or experiments to correct for variations not related to biological differences using Harmony.
-  - Annotation: Annotate identified clusters to known cell types based on marker gene expression.
+  - Annotation: Annotate identified clusters to known cell types based on marker gene expression using CellTypist.
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
@@ -111,6 +111,7 @@ nextflow run immunespace/scintegrator \
 - --hvg_max_mean [integer] Cutoff for the max means. [default: 3]
 - --hvg_min_disp [number]  Cutoff for the normalized dispersions. [default: 0.5]
 - --cluster_nb [string]  Path to the clustering notebook. [default: assets/pipeline_cluster.ipynb]
+- --Anno_model [string] Choose the reference model used for CellTypist annotation. Check https://www.celltypist.org/models.
 
 **Input/output options**
 - --input [string]  Path to comma-separated file containing information about the samples in the experiment.
