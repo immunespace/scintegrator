@@ -24,7 +24,7 @@ Here’s an example of a valid samplesheet:
 
 ```csv title="samplesheet.csv"
 
-sample_id,path,study_id
+sample,path_to_h5_file,study_id
 sample1,sample1.h5,test
 sample2,sample2.h5,test
 
@@ -33,8 +33,7 @@ sample2,sample2.h5,test
 | Column    | Description                                                                                                                                                                            |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `path` | Full path to h5 file of scRNA-seq data. |
-| `study_id` | Cumstom study name of the experiment. |
+| `path_to_h5_file` | Full path to h5 file of scRNA-seq data.                                                            |
                                                            |
 
 An [example samplesheet](../assets/test_samplesheet.csv) has been provided with the pipeline.
@@ -44,7 +43,7 @@ An [example samplesheet](../assets/test_samplesheet.csv) has been provided with 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run immunespace/scintegrator --input ./samplesheet.csv --outdir ./results -profile docker
+nextflow run immunespace/scintegrator --input ./samplesheet.csv --outdir ./results --genome GRCh37 -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.

@@ -2,7 +2,7 @@ process SCANPY_CLUSTER {
     label 'process_medium'
     //build container under the same folder first with
     // docker build . -t scintegrator/scanpy_cluster:dev
-    container 'docker.io/immcantation/scintegrator:1.0'
+    container 'docker.io/immcantation/scintegrator:1.1'
     publishDir "${params.outdir}/scanpy_cluster", mode: 'copy'
 
     input:
@@ -20,6 +20,9 @@ process SCANPY_CLUSTER {
 
     script:
     """
+    export CELLTYPIST_FOLDER=/tmp/celltypist
+    mkdir -p /tmp/celltypist
+
     papermill ${qc_nb} pipeline_cluster_out.ipynb \\
     -p ensembl_ig_tr_genes ${ensembl_ig_tr_genes.baseName} \\
     -p clustering_n_neighbors ${params.clustering_n_neighbors} \\
@@ -27,7 +30,8 @@ process SCANPY_CLUSTER {
     -p clustering_resolution ${params.clustering_resolution} \\
     -p hvg_min_mean ${params.hvg_min_mean} \\
     -p hvg_max_mean ${params.hvg_max_mean} \\
-    -p hvg_min_disp ${params.hvg_min_disp}
+    -p hvg_min_disp ${params.hvg_min_disp} \\
+    -p Anno_model ${params.Anno_model}
     jupyter nbconvert --to html pipeline_cluster_out.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

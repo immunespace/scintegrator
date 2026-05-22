@@ -6,8 +6,10 @@ channels:
 
 dependencies:
   - conda-forge::python=3.10.12
+  - conda-forge::setuptools=70.3.0
   - r-base=4.2
   - r-essentials
+  - conda-forge::r-igraph
   - conda-forge::scanpy
   - conda-forge::papermill
   - conda-forge::ipykernel=6.29.3
@@ -28,11 +30,14 @@ dependencies:
   - conda-forge::jupyterlab
   - conda-forge::ipython
   - conda-forge::poppler
+  - conda-forge::cmake
   - conda-forge::pip
+  - bioconda::celltypist
   - pip:
+      - mpl-scatter-density
       - scimap
       - datacache
-      - singler == 0.3.0
+      - singler
       - celldex
       - harmonypy
       - pdf2image
