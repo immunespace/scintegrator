@@ -9,6 +9,7 @@ dependencies:
   - conda-forge::setuptools=70.3.0
   - r-base=4.2
   - r-essentials
+  - conda-forge::r-igraph
   - conda-forge::scanpy
   - conda-forge::papermill
   - conda-forge::ipykernel=6.29.3
