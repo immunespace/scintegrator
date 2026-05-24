@@ -1,3 +1,3 @@
 sample_id,path,study_id
-CBday1,https://zenodo.org/records/13712800/files/CB_day1.h5,test
-CBday7,https://zenodo.org/records/13712800/files/CB1_day7.h5,test
+F15_day0,https://zenodo.org/records/20368325/files/F15_0_filtered_feature_bc_matrix.h5,test
+F15_day7,https://zenodo.org/records/20368325/files/F15_7_filtered_feature_bc_matrix.h5,test
