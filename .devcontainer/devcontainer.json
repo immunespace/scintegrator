@@ -3,7 +3,17 @@
     "image": "docker.io/immcantation/scintegrator:1.1",
     "features": {
         "ghcr.io/devcontainers/features/git:1": {},
-        "ghcr.io/devcontainers/features/github-cli:1": {}
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "17"
+        },
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+    "postCreateCommand": "curl -s https://get.nextflow.io | bash && sudo mv nextflow /usr/local/bin/",
+    "hostRequirements": {
+        "cpus": 4,
+        "memory": "16gb",
+        "storage": "32gb"
     },
     "customizations": {
         "vscode": {
