@@ -1,3 +1,6 @@
 {
-    "cSpell.words": ["pyensembl"]
+    "cSpell.words": [
+        "pyensembl"
+    ],
+    "nextflow.telemetry.enabled": false
 }
