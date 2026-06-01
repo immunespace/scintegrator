@@ -1,23 +1,45 @@
-# nf-core/airrflow: Single-cell tutorial
+# immunespace/scintegrator: scRNA-seq data processing tutorial
 
-This tutorial provides a step by step introduction on how to run nf-core/airrflow on single-cell BCR-seq data or single-cell TCR-seq data.
+This tutorial provides a step by step introduction on how to run immunespace/scintegrator on single-cell RNA-seq data.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/TT6eaoiZQvg?si=Psbo9cQ7KemfiBd5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+## Introduction
+
+**immunespace/scintegrator** is a bioinformatics pipeline to analyze single-cell RNA-seq (scRNA-seq) data using the **Scanpy** toolkit. It automates key steps of scRNA-seq analysis, such as data preprocessing, integration, clustering, annotation and visualization, enabling efficient and reproducible workflows.
+
+## Pipeline Summary
+
+Each of these steps in the scintegrator pipeline is customizable, allowing researchers to adjust parameters based on the specific characteristics of their dataset and research questions.
+
+- **Scanpy_QC** - Implements preprocessing steps including doublet removal, rigorous Quality Control (QC), and the generation of comprehensive plot reports.
+  - **Cell Filtering**: Remove cells that do not meet certain quality metrics, such as a minimum number of genes expressed or an excessive percentage of mitochondrial gene expression.
+  - **Gene Filtering**: Exclude genes that are not detected in a sufficient number of cells, which helps in focusing the analysis on biologically relevant data.
+  - **Doublet Detection**: Use Scrublet to identify and remove potential doublets from the data, ensuring that each cell analyzed represents a single biological cell.
+  - **Data Summarization**: Generate plots of quality metrics to visually assess the quality of the data and the effectiveness of preprocessing steps.
+
+- **Scanpy_Clustering** - Scanpy clustering workflow, including data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, data integration and cell type annotation.
+  - **Removal of TR and IG Genes**: Exclude T-cell receptor (TR) and immunoglobulin (IG) genes which can skew analysis due to their high variability and cell-type specific expression.
+  - **Data Normalization**: Normalize data to make the gene expression profiles more comparable across cells.
+  - **Log Transformation**: Apply log transformation to normalize the distribution of gene expression data.
+  - **Highly Variable Genes (HVGs) Identification**: Select genes with high variability across cells which are informative for clustering.
+  - **Principal Component Analysis (PCA)**: Reduce dimensionality of the dataset to capture the most significant gene expression changes.
+  - **Clustering**: Group cells based on similarities in their gene expression profiles using algorithms like Leiden or Louvain.
+  - **Data Integration**: Integrate data from different batches or experiments to correct for variations not related to biological differences using Harmony.
+  - **Annotation**: Annotate identified clusters to known cell types based on marker gene expression using CellTypist.
 
 ## Pre-requisites
 
-You can run this tutorial using the Github Codespaces platform. Codespaces already has Nextflow and Singularity pre-installed, and it can automatically be used for every nf-core repository. To create a Codespace instance for nf-core/airrflow, first click on the button labelled `Code` at the top of [nf-core/airrflow repository](https://github.com/nf-core/airrflow).
+You can run this tutorial using the Github Codespaces platform. To create a Codespace instance for immunespace/scintegrator, first click on the button labelled `Code` at the top of [immunespace/scintegrator](https://github.com/immunespace/scintegrator).
 
 In the dropdown menu, go to the `Codespaces` tab. Click the `...` sign, then select `+ New with options...`.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/nf-core/airrflow/dev/docs/images/Create_codespaces.png" width="400" alt="Create Codespaces with options">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/codespaces_1.png" width="400" alt="Create Codespaces with options">
 </p>
 
 After that, you’ll be directed to the configuration page. Select "4-core" for `machine type`, which will give you 4 CPUs, 16GB RAM and 32GB space.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/nf-core/airrflow/dev/docs/images/Codespaces_4core.png" width="400" alt="Chose 4-core">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/codespaces_2.png" width="400" alt="Chose 4-core">
 </p>
 
 If you want to know more about Codespaces, check [the Codespaces overview](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces) or the Codespaces section in nf-core documentation [the Devcontainers overview](https://nf-co.re/docs/tutorials/devcontainer/overview).
@@ -25,73 +47,81 @@ If you want to know more about Codespaces, check [the Codespaces overview](https
 When running this tutorial on your local machine, you'll first have to set up Nextflow and a container engine (Docker or Singularity).
 
 > [!NOTE]
-> If you want to run this tutorial on your local machine, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set up Nextflow and a container engine needed to run this pipeline. At the moment, nf-core/airrflow does NOT support using conda virtual environments for dependency management, only containers are supported. To install Docker, follow the [instructions](https://docs.docker.com/engine/install/). After installation Docker on Linux, don't forget to check the [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/).
+> If you want to run this tutorial on your local machine, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set up Nextflow and a container engine needed to run this pipeline. At the moment, immunespace/scintegrator does NOT support using conda virtual environments for dependency management, only containers are supported. To install Docker, follow the [instructions](https://docs.docker.com/engine/install/). After installation Docker on Linux, don't forget to check the [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/).
+
+
+### Install Nextflow
+
+Once the Codespaces environment is ready, install Nextflow by running the following commands in the terminal:
+
+```bash
+curl -s https://get.nextflow.io | bash
+mv nextflow /usr/local/bin/
+```
+
+You can verify the installation was successful by checking the Nextflow version:
+
+```bash
+nextflow -version
+```
 
 ## Testing the pipeline with built-in tests
 
 Once you have set up Nextflow and container (Docker or Singularity) for your local machine or Codespaces environment, test nf-core/airrflow with the built-in test data.
 
 ```bash
-nextflow run nf-core/airrflow -r 5.0.0 -profile test,docker --outdir test_results
+nextflow run immunespace/scintegrator -profile test,docker --outdir test_results
 ```
 
-Change the `docker` profile to `singularity` if you use Codespaces since Docker currently cannot be used in Codespaces. You can first set up a Singularity cache directory which will allow the reuse of Singularity container across all runs:
-
-```bash
-mkdir singularity_cache
-export NXF_SINGULARITY_CACHEDIR="/workspaces/airrflow/singularity_cache"
-```
-
-Then run nf-core/airrflow with the test data:
-
-```bash
-nextflow run nf-core/airrflow -r 5.0.0 -profile test,singularity --outdir test_results
-```
 
 > [!NOTE]
-> The '-r' flag in the command specifies which nf-core/airrflow release to run. We recommend always [checking and using the latest release] (https://nf-co.re/airrflow/releases_stats/).
-
-> [!NOTE]
-> Because Codespaces provides limited CPU and RAM resources, the test run may take 20-25 minutes. The process will be faster on systems with greater CPU and RAM capacity.
+> Because Codespaces provides limited CPU and RAM resources, the test run may take 10-15 minutes. The process will be faster on systems with greater CPU and RAM capacity.
 
 If the tests run through correctly, you should see this output in your command line:
 
 ```bash
--[nf-core/airrflow] Pipeline completed successfully-
-Completed at: 25-Nov-2025 21:07:46
-Duration    : 23m 56s
-CPU hours   : 1.1
-Succeeded   : 221
+-[immunespace/scintegrator] Pipeline completed successfully-
+Completed at: 29-May-2026 18:05:59
+Duration    : 9m 22s
+CPU hours   : 0.3
+Succeeded   : 3
 ```
 
-## Supported input formats
+## Tutorial Data and Results
 
-There are two supported input formats for nf-core/airrflow single-cell AIRR-seq pipeline: assembled sequences in AIRR rearrangement format or raw reads in fastq format sequenced in the 10x Genomics platform.
+The complete input data and pre-computed results for this tutorial are publicly available on Zenodo. If you would like to explore the results without running the pipeline yourself, you can download them directly from the link below:
 
-The [AIRR rearrangement format](https://docs.airr-community.org/en/latest/datarep/rearrangements.html) is a standard format to store BCR and TCR sequence data with relevant metadata fields. This format is supported as input and output by multiple tools specific for analyzing AIRR-seq data. For example, when analyzing single-cell AIRR sequencing data with CellRanger versions >= 4.0, an AIRR rearrangement file will be provided as output, and this is the recommended input for running nf-core/airrflow. Note that it is also possible to start running the pipeline directly from raw sequencing reads, and in this case CellRanger will be run when launching nf-core/airrflow.
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
 
-The AIRR rearrangement format is also the default one when analyzing publicly available data from specialized AIRR-seq databases such as the AIRR Data Commons through the [iReceptor gateway](https://gateway.ireceptor.org/login).
+> [!TIP]
+> Downloading the pre-computed results is recommended if you want to quickly explore the pipeline outputs before committing to a full run.
 
-In this tutorial we will showcase how to run nf-core/airrflow with both of the input formats.
+## Datasets
 
-![nf-core/airrflow overview](https://raw.githubusercontent.com/nf-core/airrflow/master/docs/images/airrflow_workflow_overview.png)
+The input data for this pipeline is in h5 format. The h5 file is the standard output of the Cell Ranger pipeline and can be found at `cellranger/outs/sample_filtered_feature_bc_matrix.h5` after running Cell Ranger on your raw sequencing data. For this tutorial, the sample h5 files are available on [Zenodo](https://doi.org/10.5281/zenodo.XXXXXXX) and the links are already provided in the samplesheet — Nextflow will retrieve the data automatically when running the pipeline.
 
-## Starting from AIRR rearrangement format
+## Preparing the Samplesheet and Configuration File
 
-### Datasets
+To run the pipeline, a comma-separated samplesheet providing the paths to the h5 files must be prepared. The samplesheet collects sample identifiers and experimental details that are important for the data analysis.
 
-For this tutorial we will use sub-sampled PBMC single-cell BCR sequencing data from two subjects, before (d0) and after flu vaccination (d12).
-The dataset is publicly available on [Zenodo](https://zenodo.org/doi/10.5281/zenodo.11373740).
-You don't need to download the dataset because the links to the samples are already provided in the samplesheet and Nextflow will get the data from the links automatically when running the pipeline.
+The samplesheet should look like this:
 
-### Preparing the samplesheet and configuration file
+`samplesheet.csv`:
 
-To run the pipeline, a tab-separated samplesheet that provides the path to the AIRR rearrangement files must be prepared.
-The samplesheet collects experimental details that are important for the data analysis.
+```csv
+sample,path_to_h5_file,study_id
+sample1,/path/to/cellranger/outs/sample1_filtered_feature_bc_matrix.h5,study_A
+sample2,/path/to/cellranger/outs/sample2_filtered_feature_bc_matrix.h5,study_A
+```
 
-Details on the required columns of a samplesheet are available [here](https://nf-co.re/airrflow/usage#assembled-input-samplesheet-bulk-or-single-cell-sequencing).
+- `sample`: Sample identifiers.
+- `path_to_h5_file`: Path to the h5 file output by Cell Ranger, typically found at `cellranger/outs/sample_filtered_feature_bc_matrix.h5`.
+- `study_id`: Study identifier for grouping samples.
 
-The resource configuration file sets the compute infrastructure maximum available number of CPUs, RAM memory and running time. This will ensure that no pipeline process requests more resources than available in the compute infrastructure where the pipeline is running. The resource config should be provided with the `-c` option. In this example we set the maximum RAM memory to 15GB, we restrict the pipeline to use 4 CPUs and to run for a maximum of 24 hours.
+> [!NOTE]
+> When running immunespace/scintegrator with your own data, provide the full absolute path to your h5 input files under the `path_to_h5_file` column.
+
+The resource configuration file sets the compute infrastructure maximum available number of CPUs, RAM memory and running time. This ensures that no pipeline process requests more resources than available in the compute infrastructure where the pipeline is running. The resource config should be provided with the `-c` option. In this example we set the maximum RAM memory to 15GB, restrict the pipeline to use 4 CPUs and allow a maximum runtime of 24 hours.
 
 ```json title="resource.config"
 process {
@@ -99,132 +129,34 @@ process {
 }
 ```
 
-We prepared the [samplesheet](https://github.com/nf-core/airrflow/blob/dev/docs/usage/single_cell_tutorial/sample_data_code/assembled_samplesheet.tsv) and the [configuration file](https://github.com/nf-core/airrflow/tree/dev/docs/usage/single_cell_tutorial/sample_data_code/resource.config) for this tutorial. Download both files to the directory where you intend to run nf-core/airrflow.
-
 > [!TIP]
-> Before setting memory and CPUs in the configuration file, we recommend verifying the available memory and CPUs on your system. Otherwise, exceeding the system's capacity may result in an error indicating that you requested more CPUs than available or run out of memory. You can also remove the "time" parameter from the configuration file to allow for unlimited runtime for large-size dataset.
+> Before setting memory and CPUs in the configuration file, we recommend verifying the available memory and CPUs on your system. Exceeding the system's capacity may result in an error indicating that you requested more CPUs than available or that you have run out of memory. You can also remove the `time` parameter from the configuration file to allow for unlimited runtime for large datasets.
 
-> [!NOTE]
-> When running nf-core/airrflow with your own data, provide the full path to your input files under the filename column.
+## Running the Pipeline
 
-### Running airrflow
-
-With all the files ready, you can start the pipeline with the following command if you run it locally.
+With all the files ready, you can start the pipeline with the following command:
 
 ```bash
-nextflow run nf-core/airrflow -r 5.0.0 \
--profile docker \
---mode assembled \
---input assembled_samplesheet.tsv \
---outdir sc_from_assembled_results  \
--c resource.config \
--resume
-```
-
-Of course you can wrap all your code in a [bash file](https://github.com/nf-core/airrflow/tree/dev/docs/usage/single_cell_tutorial/sample_data_code/airrflow_sc_from_assembled.sh). With the bash file, it's easy to run the pipeline with a single-line command.
-
-```bash
-bash airrflow_sc_from_assembled.sh
-```
-
-If you are running the pipeline on Codespace, remember to replace `docker` profile with `singularity`.
-
-Or run this [bash file](https://github.com/nf-core/airrflow/tree/dev/docs/usage/single_cell_tutorial/sample_data_code/airrflow_sc_from_assembled_codespace.sh) within the folder where it locates.
-
-```bash
-bash airrflow_sc_from_assembled_codespace.sh
+nextflow run immunespace/scintegrator \
+   -profile docker \
+   --input samplesheet.csv \
+   --outdir scintegrator_results \
+   -c resource.config \
+   -resume
 ```
 
 > [!TIP]
-> When launching a Nextflow pipeline with the `-resume` option, any processes that have already been run with the exact same code, settings and inputs will be cached and the pipeline will resume from the last step that changed or failed with an error. The benefit of using "resume" is to avoid duplicating previous work and save time when re-running a pipeline.
-> We include "resume" in our Nextflow command as a precaution in case anything goes wrong during execution. After fixing the issue, you can relaunch the pipeline with the same command, it will resume running from the point of failure, significantly reducing runtime and resource usage.
-
-After launching the pipeline the following will be printed to the console output, followed by some the default parameters used by the pipeline and execution log of airrflow processes:
-
-```bash
- N E X T F L O W   ~  version 24.10.5
-
-WARN: It appears you have never run this project before -- Option `-resume` is ignored
-Launching `https://github.com/nf-core/airrflow` [boring_heyrovsky] DSL2 - revision: d91dd840f4 [5.0.0]
-
-
-------------------------------------------------------
-                                        ,--./,-.
-        ___     __   __   __   ___     /,-._.--~'
-  |\ | |__  __ /  ` /  \ |__) |__         }  {
-  | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                        `._,._,'
-  nf-core/airrflow 5.0.0
-------------------------------------------------------
-
-```
-
-Once the pipeline has finished successfully, the following message will appear:
-
-```bash
--[nf-core/airrflow] Pipeline completed successfully-
-Completed at: 17-Nov-2025 19:20:17
-Duration    : 7m 10s
-CPU hours   : 0.3
-Succeeded   : 44
-```
-
-## Starting from raw reads in fastq format
-
-### Datasets
-
-For this tutorial we will use subsampled blood single-cell TCR sequencing data of one subject generated from the 10x Genomic platform. The links to the fastq files are in the samplesheet.
-
-### Preparing samplesheet, gene reference and configuration file
-
-To run nf-core/airrflow on single cell TCR or BCR sequencing data from fastq files, we need to prepare samplesheet, pre-built 10x genomics V(D)J references and configuration file in advance. Details on the required columns for this samplesheet are available [here](https://nf-co.re/airrflow/usage#fastq-input-samplesheet-single-cell-sequencing).
+> When launching a Nextflow pipeline with the `-resume` option, any processes that have already been run with the exact same code, settings and inputs will be cached and the pipeline will resume from the last step that changed or failed with an error. We include `-resume` in our Nextflow command as a precaution in case anything goes wrong during execution — after fixing the issue, you can relaunch the pipeline with the same command and it will resume from the point of failure, significantly reducing runtime and resource usage.
 
 > [!WARNING]
-> The fastq file names must follow the 10X Genomics file naming convention or the cellranger process will fail.
+> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration **except for parameters** — see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
 
-We prepared the [samplesheet](https://github.com/nf-core/airrflow/blob/dev/docs/usage/single_cell_tutorial/sample_data_code/10x_sc_raw.tsv) and the [configuration file](https://github.com/nf-core/airrflow/blob/dev/docs/usage/single_cell_tutorial/sample_data_code/resource.config) for this tutorial. Download these two files to the directory where you intend to run nf-core/airrflow.
-
-> [!TIP]
-> Before setting memory and CPUs in the configuration file, we recommend verifying the available memory and CPUs on your system. Otherwise, exceeding the system's capacity may result in an error indicating that you requested more CPUs than available or run out of memory.
-
-Pre-built 10x genomics V(D)J references can be accessed at the [10x Genomics website](https://www.10xgenomics.com/support/software/cell-ranger/downloads). Both human and mouse V(D)J references are available. Download the reference that corresponds to the species of your dataset.
-
-### Running airrflow
-
-To run the pipeline locally, use the following command to launch nf-core/airrflow for the dataset in this tutorial:
+After launching the pipeline, the following will be printed to the console output, followed by the default parameters used by the pipeline and an execution log of the pipeline processes:
 
 ```bash
-nextflow run nf-core/airrflow -r 5.0.0 \
--profile docker \
---mode fastq \
---input 10x_sc_raw.tsv \
---library_generation_method sc_10x_genomics \
---reference_10x refdata-cellranger-vdj-GRCh38-alts-ensembl-7.1.0 \
--c resource.config \
---clonal_threshold 0 \
---outdir sc_from_fastq_results \
--resume
-```
+ N E X T F L O W   ~  version 26.04.2
 
-In this tutorial, since the samples are TCRs, which do not have somatic hypermutation, clones are defined strictly by identical junction regions. For this reason, we set the `--clonal_threshold` parameter to 0. For more details on important considerations when performing clonal analysis check [FAQ](./FAQ.md).
-
-Of course you can wrap all your code in a bash file. We prepared one for you and it's available [here](https://github.com/nf-core/airrflow/tree/dev/docs/usage/single_cell_tutorial/sample_data_code/airrflow_sc_from_fastq.sh).
-With the bash file, it's easy to run the pipeline with a single-line command.
-
-```bash
-bash airrflow_sc_from_fastq.sh
-```
-
-> [!NOTE]
-> Due to the limited RAM and storage space, the single cell raw reads example in this tutorial cannot be run on Codespace.
-
-After launching the pipeline the following will be printed to the console output, followed by some the default parameters used by the pipeline and execution log of airrflow processes:
-
-```bash
- N E X T F L O W   ~  version 24.10.5
-
-Launching `https://github.com/nf-core/airrflow` [gloomy_monod] DSL2 - revision: d91dd840f4 [5.0.0]
-
+Launching `./main.nf` [amazing_bernard] revision: 58c415dc5f
 
 ------------------------------------------------------
                                         ,--./,-.
@@ -232,73 +164,142 @@ Launching `https://github.com/nf-core/airrflow` [gloomy_monod] DSL2 - revision: 
   |\ | |__  __ /  ` /  \ |__) |__         }  {
   | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                         `._,._,'
-  nf-core/airrflow 5.0.0
+  immunespace/scintegrator v1.0
 ------------------------------------------------------
 ```
 
 Once the pipeline has finished successfully, the following message will appear:
 
 ```bash
--[nf-core/airrflow] Pipeline completed successfully-
+-[immunespace/scintegrator] Pipeline completed successfully-
 Completed at: 11-Mar-2025 13:18:13
-Duration    : 2m 46s
-CPU hours   : 0.3 (0.1% cached)
-Succeeded   : 17
-Cached      : 2
+Duration    : 10m 32s
+CPU hours   : 0.5
+Succeeded   : 28
 ```
 
-## Understanding the results
+## Understanding the Results
 
-After running the pipeline, several sub-folders are available under the results folder.
+After running the pipeline, several sub-folders are available under the results folder:
 
-```bash
-Airrflow_report.html
-- cellranger
-- vdj_annotation
-- qc_filtering
-- clonal_analysis
-- repertoire_comparison
-- multiqc
-- report_file_size
-- pipeline_info
+scintegrator_results/
+├── scanpy_qc/
+│   ├── pipeline_QC_out.html
+│   └── {sample_name}.h5ad
+├── scanpy_cluster/
+│   ├── pipeline_cluster_out.html
+│   └── concat.h5ad
+├── multiqc/
+└── pipeline_info/
+
+The analysis steps and their corresponding output folders are described in detail below:
+
+### 1. Quality Control (`scanpy_qc/`)
+
+The `scanpy_qc/` folder contains two types of output:
+
+- **`<sample_name>_filtered_feature_bc_matrix.h5ad`**: An AnnData h5ad file named after each sample (e.g. `F15_7_filtered_feature_bc_matrix.h5ad`), storing the single-cell expression data after quality control processing. These per-sample h5ad files can be loaded directly in Python with Scanpy for further custom downstream analysis.
+- **`pipeline_QC_out.html`**: An interactive HTML report documenting all quality control steps and plots. The following plots are generated to help you assess the quality of your data and the effectiveness of the preprocessing steps:
+
+#### Cell Count Plot
+This plot visualizes the count of cells analyzed across different samples after cell filtering that does not meet certain quality metrics, such as a minimum number of genes expressed or an excessive percentage of mitochondrial gene expression.
+
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/cell_count_plot.png" width="400">
+
+#### Number of Genes per Cell Plot
+This plot shows the distribution of the number of genes detected in each cell across different samples after excluding genes that are not detected in a sufficient number of cells.
+
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/ngenes_plot.png" width="400">
+
+#### Percentage of Mitochondrial Genes Plot
+This plot displays the percentage of mitochondrial genes found in each cell across samples after filtering the cells with a high percentage of mitochondrial genes.
+
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/pct_counts_mt_plot.png" width="400">
+
+#### Total Counts vs. Number of Genes
+This plot visualizes the relationship between the total number of transcript counts and the number of genes detected in cells across samples that have passed all quality controls.
+
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/totalcounts_ngenes.png" width="400">
+
+#### Number of Genes vs. Percentage of Mitochondrial Genes
+This plot compares the number of genes per cell with the percentage of mitochondrial genes across samples that have passed all quality controls.
+
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/ngenes_pctcountsmt.png" width="400">
+
+### 2. Clustering and Annotation (`scanpy_cluster/`)
+
+The `scanpy_cluster/` folder contains two types of output:
+
+- **`concat.h5ad`**: A single merged AnnData h5ad file containing all samples after clustering and cell type annotation. This file stores the fully processed dataset including cluster assignments, Harmony batch-corrected embeddings, UMAP coordinates, and CellTypist annotations, and can be loaded directly in Python with Scanpy for further custom downstream analysis.
+- **`pipeline_cluster_out.html`**: An interactive HTML report documenting all clustering and annotation steps and plots. The Scanpy clustering step performs data normalization, log transformation, removal of TR and IG genes, identification of highly variable genes, PCA analysis, cell clustering, batch integration with Harmony, and cell type annotation with CellTypist. The following plots are generated:
+
+#### Highly Variable Genes
+This plot shows the genes selected as highly variable across cells, which are used as the basis for dimensionality reduction and clustering.
+
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/highly_variable_genes.png" width="400">
+
+#### Clustering and Cell Type Annotation
+This UMAP plot displays the identified cell clusters and their corresponding CellTypist annotations, allowing you to explore the cell type composition of your dataset.
+
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/clustering.png" width="400">
+
+### 3. MultiQC (`multiqc/`)
+
+A MultiQC report summarizing QC metrics across all samples. This report aggregates quality metrics from the whole pipeline into a single interactive HTML report.
+
+### 4. Pipeline Info (`pipeline_info/`)
+
+[Nextflow](https://www.nextflow.io/docs/latest/tracing.html) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors and provide information such as launch commands, run times and resource usage. The following files are produced:
+
+- `execution_report.html`, `execution_timeline.html`, `execution_trace.txt` and `pipeline_dag.dot`/`pipeline_dag.svg`: Reports generated by Nextflow.
+- `pipeline_report.html`, `pipeline_report.txt` and `software_versions.yml`: Reports generated by the pipeline. The `pipeline_report*` files will only be present if the `--email` / `--email_on_fail` parameters are used when running the pipeline.
+- `samplesheet.valid.csv`: Reformatted samplesheet files used as input to the pipeline.
+- `params.json`: Parameters used by the pipeline run.
+
+
+## Subsetting B Cell Populations
+
+After the pipeline has completed, you may want to subset specific cell populations from the fully annotated `concat.h5ad` file for further downstream analysis. The following Python script shows how to extract all B cell populations from the dataset using Scanpy:
+
+```python
+import scanpy as sc
+
+# Load the annotated data
+adata = sc.read_h5ad('scintegrator_results/scanpy_cluster/concat.h5ad')
+
+# Define B cell populations
+b_cell_types = [
+    'Age-associated B cells',
+    'B cells',
+    'Cycling B cells',
+    'Follicular B cells',
+    'Germinal center B cells',
+    'Large pre-B cells',
+    'Memory B cells',
+    'Naive B cells',
+    'Plasma cells',
+    'Plasmablasts',
+    'Pre-pro-B cells',
+    'Pro-B cells',
+    'Proliferative germinal center B cells',
+    'Small pre-B cells',
+    'Transitional B cells'
+]
+
+# Subset B cells
+adata_bcells = adata[adata.obs['cell_type'].isin(b_cell_types)].copy()
+
+# Save the B cell subset
+adata_bcells.write_h5ad('scintegrator_results/scanpy_cluster/concat_bcells.h5ad')
+
+print(f"Total cells: {adata.n_obs}")
+print(f"B cells subset: {adata_bcells.n_obs}")
 ```
 
-The summary report, named `Airrflow_report.html`, provides an overview of the analysis results, such as an overview of the number of sequences per sample in each of the pipeline steps, the V(D)J gene assignment and QC, and V gene family usage. Additionally, it contains links to detailed reports for other specific analysis steps.
+The resulting `concat_bcells.h5ad` file contains only the B cell populations and can be used for further B cell-specific downstream analyses such as re-clustering, differential expression, or trajectory analysis.
 
-The analysis steps and their corresponding folders, where the results are stored, are briefly listed below. Detailed documentation on the pipeline output can be found on the [Output documentation page](https://nf-co.re/airrflow/docs/output/).
-
-1. QC and sequence assembly (if starting from fastq files).
-   - In this first step, Cell Ranger's VDJ algorithm is employed to assemble contigs, annotate contigs, and call cells. The results are stored in the 'cellranger' folder.
-
-2. V(D)J annotation and filtering.
-   - In this step, V(D)J gene segments are inferred using the provided germline reference and [`IgBLAST`](https://www.ncbi.nlm.nih.gov/igblast/). Alignments are annotated in AIRR format. Non-productive sequences and sequences with low alignment quality are filtered out unless otherwise specified. The intermediate results are stored under the folder named 'vdj_annotation'.
-
-3. QC filtering.
-   - In this step, cells without heavy chains or with multiple heavy chains are removed. Sequences in different samples that share both the same cell_id and nucleotide sequence are filtered out. The result are stored in the 'qc-filtering' folder.
-
-4. Clonal analysis.
-   - Results of the clonal threshold determination using `SHazaM` should be inspected in the html report under the 'clonal_analysis/find_threshold' folder. If the automatic threshold is unsatisfactory, you can set the threshold manually and re-run the pipeline.
-     (Tip: use -resume whenever running the Nextflow pipeline to avoid duplicating previous work).
-   - Clonal inference is performed with `SCOPer`. Clonal inference results as well as clonal abundance and diversity plots can be inspected in the html report in the folder 'clonal_analysis/clonal_assignment'. For BCR sequencing data, mutation frequency is also computed using `SHazaM` at this step and plotted in the report. The `repertoires` subfolder contains the AIRR formatted files with the clonal assignments in a new column `clone_id` and mutation frequency in the column `mu_freq`. The `tables` subfolder contains the tabulated abundance and diversity computation as well as a table with the number of clones and their size. The `ggplots` subfolder contains the abundance and diversity plots as an `RData` object for loading and customization in R.
-   - If lineage trees were computed using `Dowser`, a folder under 'clonal_analysis/dowser_lineages' will be present. The trees can be inspected in the html report and saved as PDF. Additionally, an `RDS` object with the formatted trees can also be loaded in R for customizing the lineage tree plots with Dowser.
-
-5. Repertoire analysis
-   - Comparison of several repertoire characteristics, such as V gene usage, across subjects, time points or cell populations. All associated plots and tables are available under the folder `repertoire_comparison`. The plots are also included in the `Airrflow_report.html` file. This report is generated from an R markdown `Rmd` file. It is possible to customize this to meet the user's needs by editing the report and then providing the edited Rmd file with the `--report_rmd` parameter. Check the remaining [Report parameters](https://nf-co.re/airrflow/parameters/#report-options) for further customizing the report.
-
-6. Other reporting.
-   Additional reports are also generated, including:
-   - MultiQC report: summarizes QC metrics across all samples.
-   - Pipeline_info report: various reports relevant to the running and execution of the pipeline.
-   - Report_file_size report: Summary of the number of sequences left after each of the most important pipeline steps.
-
-## Find out more
-
-To continue learning about how to use nf-core/airrflow please check out the following documentation:
-
-- [nf-core/airrflow usage documentation](https://nf-co.re/airrflow/docs/usage)
-- [nf-core/airrflow parameters documentation](https://nf-co.re/airrflow/parameters)
-- [FAQ page](./FAQ.md)
-
-The nf-core troubleshooting documentation will also help you troubleshoot your Nextflow errors
-
-- [nf-core troubleshooting](https://nf-co.re/docs/usage/troubleshooting/overview)
+> [!TIP]
+> You can adapt this script to subset any other cell population of interest by modifying the `b_cell_types` list with the cell type labels present in your dataset. To see all available cell types in your data, run:
+> ```python
+> print(adata.obs['cell_type'].unique().tolist())
+> ```
