@@ -4,7 +4,7 @@ This tutorial provides a step by step introduction on how to run immunespace/sci
 
 ## Introduction
 
-**immunespace/scintegrator** is a bioinformatics pipeline to analyze single-cell RNA-seq (scRNA-seq) data using the **Scanpy** toolkit. It automates key steps of scRNA-seq analysis, such as data preprocessing, integration, clustering, annotation and visualization, enabling efficient and reproducible workflows.
+**immunespace/scintegrator** is a bioinformatics pipeline to analyze single-cell RNA-seq (scRNA-seq) data using the **Scanpy** toolkit. It automates key steps of scRNA-seq data analysis, including data preprocessing, integration, clustering, annotation and visualization, enabling efficient and reproducible workflows.
 
 ## Pipeline Summary
 
@@ -33,13 +33,13 @@ You can run this tutorial using the Github Codespaces platform. To create a Code
 In the dropdown menu, go to the `Codespaces` tab. Click the `...` sign, then select `+ New with options...`.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/codespaces_1.png" width="400" alt="Create Codespaces with options">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/codespaces_1.png" width="800" alt="Create Codespaces with options">
 </p>
 
 After that, you’ll be directed to the configuration page. Select "4-core" for `machine type`, which will give you 4 CPUs, 16GB RAM and 32GB space.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/codespaces_2.png" width="400" alt="Chose 4-core">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/codespaces_2.png" width="800" alt="Chose 4-core">
 </p>
 
 If you want to know more about Codespaces, check [the Codespaces overview](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces) or the Codespaces section in nf-core documentation [the Devcontainers overview](https://nf-co.re/docs/tutorials/devcontainer/overview).
@@ -216,11 +216,6 @@ Succeeded   : 28
 | `--email` | string | Email address for completion summary |
 | `--multiqc_title` | string | MultiQC report title. Printed as page header, used for filename if not otherwise specified |
 
-### Generic Options
-
-| Parameter | Type | Description |
-|---|---|---|
-| `--multiqc_methods_description` | string | Custom MultiQC yaml file containing HTML including a methods description |
 
 ## Understanding the Results
 
@@ -349,3 +344,14 @@ The resulting `concat_bcells.h5ad` file contains only the B cell populations and
 > ```python
 > print(adata.obs['cell_type'].unique().tolist())
 > ```
+
+
+```
+nextflow run nf-core/scrnaseq \
+   -profile <docker/singularity/.../institute> \
+   --input samplesheet.csv \
+   --genome_fasta GRCm38.p6.genome.chr19.fa \
+   --gtf gencode.vM19.annotation.chr19.gtf \
+   --aligner cellranger \
+   --outdir
+```
