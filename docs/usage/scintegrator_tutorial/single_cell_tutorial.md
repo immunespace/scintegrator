@@ -108,11 +108,10 @@ The samplesheet should look like this:
 
 `samplesheet.csv`:
 
-```csv
-sample,path_to_h5_file,study_id
-sample1,/path/to/cellranger/outs/sample1_filtered_feature_bc_matrix.h5,study_A
-sample2,/path/to/cellranger/outs/sample2_filtered_feature_bc_matrix.h5,study_A
-```
+| sample | path_to_h5_file | study_id |
+|---|---|---|
+| sample1 | /path/to/cellranger/outs/sample1_filtered_feature_bc_matrix.h5 | study_A |
+| sample2 | /path/to/cellranger/outs/sample2_filtered_feature_bc_matrix.h5 | study_A |
 
 - `sample`: Sample identifiers.
 - `path_to_h5_file`: Path to the h5 file output by Cell Ranger, typically found at `cellranger/outs/sample_filtered_feature_bc_matrix.h5`.
@@ -151,6 +150,7 @@ nextflow run immunespace/scintegrator \
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration **except for parameters** — see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
 
+
 After launching the pipeline, the following will be printed to the console output, followed by the default parameters used by the pipeline and an execution log of the pipeline processes:
 
 ```bash
@@ -178,10 +178,55 @@ CPU hours   : 0.5
 Succeeded   : 28
 ```
 
+## Parameters
+
+### Scanpy_QC
+
+| Parameter | Type | Description | Default |
+|---|---|---|---|
+| `--scanpy_species` | string | Species of the data | `human` |
+| `--scanpy_min_genes` | integer | Minimum number of genes expressed required for a cell to pass filtering | `300` |
+| `--scanpy_min_cells` | integer | Minimum number of cells expressed required for a gene to pass filtering | `5` |
+| `--scanpy_pct_mt` | integer | Maximum percentage of counts in mitochondrial genes required for a cell to pass filtering | `20` |
+| `--scanpy_total_counts` | integer | Minimum number of total counts required for a cell to pass filtering | `200` |
+| `--qc_nb` | string | Path to the QC notebook | `assets/pipeline_QC.ipynb` |
+
+### Scanpy_Clustering
+
+| Parameter | Type | Description | Default |
+|---|---|---|---|
+| `--expected_doublet_rate` | number | The estimated doublet rate for the data | `0.06` |
+| `--ensembl_ig_tr_genes` | string | Immunoglobulin (IG) and T cell receptor (TR) genes list | `assets/tr_ig_genes_ensembl_v111_human.csv` |
+| `--ensembl_species` | string | Species of the data | `human` |
+| `--clustering_n_neighbors` | integer | Size of local neighborhood used for manifold approximation | `10` |
+| `--clustering_n_pcs` | integer | Number of PCs | `40` |
+| `--clustering_resolution` | number | The resolution of the clustering | `0.5` |
+| `--hvg_min_mean` | number | Cutoff for the min means | `0.0125` |
+| `--hvg_max_mean` | integer | Cutoff for the max means | `3` |
+| `--hvg_min_disp` | number | Cutoff for the normalized dispersions | `0.5` |
+| `--cluster_nb` | string | Path to the clustering notebook | `assets/pipeline_cluster.ipynb` |
+| `--Anno_model` | string | Reference model used for CellTypist annotation. See [CellTypist models](https://www.celltypist.org/models) | — |
+
+### Input/Output Options
+
+| Parameter | Type | Description |
+|---|---|---|
+| `--input` | string | Path to comma-separated file containing information about the samples in the experiment |
+| `--outdir` | string | The output directory where the results will be saved. Use absolute paths for cloud infrastructure |
+| `--email` | string | Email address for completion summary |
+| `--multiqc_title` | string | MultiQC report title. Printed as page header, used for filename if not otherwise specified |
+
+### Generic Options
+
+| Parameter | Type | Description |
+|---|---|---|
+| `--multiqc_methods_description` | string | Custom MultiQC yaml file containing HTML including a methods description |
+
 ## Understanding the Results
 
 After running the pipeline, several sub-folders are available under the results folder:
 
+```
 scintegrator_results/
 ├── scanpy_qc/
 │   ├── pipeline_QC_out.html
@@ -191,6 +236,7 @@ scintegrator_results/
 │   └── concat.h5ad
 ├── multiqc/
 └── pipeline_info/
+```
 
 The analysis steps and their corresponding output folders are described in detail below:
 
@@ -204,27 +250,27 @@ The `scanpy_qc/` folder contains two types of output:
 #### Cell Count Plot
 This plot visualizes the count of cells analyzed across different samples after cell filtering that does not meet certain quality metrics, such as a minimum number of genes expressed or an excessive percentage of mitochondrial gene expression.
 
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/cell_count_plot.png" width="400">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_cell_count_plot.png" width="400">
 
 #### Number of Genes per Cell Plot
 This plot shows the distribution of the number of genes detected in each cell across different samples after excluding genes that are not detected in a sufficient number of cells.
 
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/ngenes_plot.png" width="400">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_ngenes_plot.png" width="400">
 
 #### Percentage of Mitochondrial Genes Plot
 This plot displays the percentage of mitochondrial genes found in each cell across samples after filtering the cells with a high percentage of mitochondrial genes.
 
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/pct_counts_mt_plot.png" width="400">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_pct_counts_mt_plot.png" width="400">
 
 #### Total Counts vs. Number of Genes
 This plot visualizes the relationship between the total number of transcript counts and the number of genes detected in cells across samples that have passed all quality controls.
 
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/totalcounts_ngenes.png" width="400">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_totalcounts_ngenes.png" width="600">
 
 #### Number of Genes vs. Percentage of Mitochondrial Genes
 This plot compares the number of genes per cell with the percentage of mitochondrial genes across samples that have passed all quality controls.
 
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/ngenes_pctcountsmt.png" width="400">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_ngenes_pctcountsmt.png" width="600">
 
 ### 2. Clustering and Annotation (`scanpy_cluster/`)
 
@@ -236,12 +282,12 @@ The `scanpy_cluster/` folder contains two types of output:
 #### Highly Variable Genes
 This plot shows the genes selected as highly variable across cells, which are used as the basis for dimensionality reduction and clustering.
 
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/highly_variable_genes.png" width="400">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_highly_variable_genes.png" width="400">
 
 #### Clustering and Cell Type Annotation
 This UMAP plot displays the identified cell clusters and their corresponding CellTypist annotations, allowing you to explore the cell type composition of your dataset.
 
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/clustering.png" width="400">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_clustering.png" width="1000">
 
 ### 3. MultiQC (`multiqc/`)
 
