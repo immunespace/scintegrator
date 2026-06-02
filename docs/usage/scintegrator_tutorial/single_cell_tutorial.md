@@ -245,7 +245,7 @@ The `scanpy_qc/` folder contains two types of output:
 #### Cell Count Plot
 This plot visualizes the count of cells analyzed across different samples after cell filtering that does not meet certain quality metrics, such as a minimum number of genes expressed or an excessive percentage of mitochondrial gene expression.
 
-<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_cell_count_plot.png" width="400">
+<img src="https://raw.githubusercontent.com/immunespace/scintegrator/master/docs/images/F15_cellcount_plot.png" width="400">
 
 #### Number of Genes per Cell Plot
 This plot shows the distribution of the number of genes detected in each cell across different samples after excluding genes that are not detected in a sufficient number of cells.
