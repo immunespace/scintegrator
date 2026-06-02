@@ -344,14 +344,3 @@ The resulting `concat_bcells.h5ad` file contains only the B cell populations and
 > ```python
 > print(adata.obs['cell_type'].unique().tolist())
 > ```
-
-
-```
-nextflow run nf-core/scrnaseq \
-   -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
-   --genome_fasta GRCm38.p6.genome.chr19.fa \
-   --gtf gencode.vM19.annotation.chr19.gtf \
-   --aligner cellranger \
-   --outdir
-```
