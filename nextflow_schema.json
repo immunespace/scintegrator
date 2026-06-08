@@ -29,7 +29,7 @@
                 "scanpy_pct_mt": {
                     "type": "integer",
                     "default": 20,
-                    "description": "Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering." 
+                    "description": "Maximun percentage of counts in mitochondrial genes required for a cell to pass filtering."
                 },
                 "scanpy_total_counts": {
                     "type": "integer",
@@ -107,6 +107,11 @@
                     "type": "string",
                     "default": "assets/pipeline_cluster.ipynb",
                     "description": "Path to the clustering notebook."
+                },
+                "Anno_model": {
+                    "type": "string",
+                    "default": "Immune_All_Low.pkl",
+                    "description": "Reference model used for CellTypist annotation. See https://www.celltypist.org/models"
                 }
             }
         },
