@@ -91,14 +91,14 @@ Succeeded   : 3
 
 The complete input data and pre-computed results for this tutorial are publicly available on Zenodo. If you would like to explore the results without running the pipeline yourself, you can download them directly from the link below:
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20483783.svg)](https://doi.org/10.5281/zenodo.20483783)
 
 > [!TIP]
 > Downloading the pre-computed results is recommended if you want to quickly explore the pipeline outputs before committing to a full run.
 
 ## Datasets
 
-The input data for this pipeline is in h5 format. The h5 file is the standard output of the Cell Ranger pipeline and can be found at `cellranger/outs/sample_filtered_feature_bc_matrix.h5` after running Cell Ranger on your raw sequencing data. For this tutorial, the sample h5 files are available on [Zenodo](https://doi.org/10.5281/zenodo.XXXXXXX) and the links are already provided in the samplesheet — Nextflow will retrieve the data automatically when running the pipeline.
+The input data for this pipeline is in h5 format. The h5 file is the standard output of the Cell Ranger pipeline and can be found at `cellranger/outs/sample_filtered_feature_bc_matrix.h5` after running Cell Ranger on your raw sequencing data. For this tutorial, the sample h5 files are available on [Zenodo](https://doi.org/10.5281/zenodo.20483783) and the links are already provided in the samplesheet — Nextflow will retrieve the data automatically when running the pipeline.
 
 ## Preparing the Samplesheet and Configuration File
 
