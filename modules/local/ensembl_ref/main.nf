@@ -2,7 +2,9 @@ process ENSEMBL_REF {
     label 'process_medium'
     //build container under the same folder first with
     // docker build . -t scintegrator/scanpy_cluster:dev
-    container 'docker.io/immcantation/scintegrator:1.0'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    'https://github.com/immunespace/scintegrator/releases/download/v1.1-containers/immcantation-scintegrator-1.1.sif' :
+    'docker.io/immcantation/scintegrator:1.1' }"
     publishDir "${params.outdir}/ensembl_ig_tr_genes", mode: 'copy'
 
     output:
