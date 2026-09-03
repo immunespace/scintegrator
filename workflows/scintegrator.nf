@@ -8,6 +8,7 @@ include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { SCANPY_QC              } from '../modules/local/scanpy_qc/main'
 include { SCANPY_CLUSTER         } from '../modules/local/scanpy_cluster/main'
+include { BCELLATLAS             } from '../modules/local/bcellatlas/main'
 include { ENSEMBL_REF            } from '../modules/local/ensembl_ref/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -31,6 +32,7 @@ workflow SCINTEGRATOR {
     ch_multiqc_files = Channel.empty()
     ch_report_qc = Channel.fromPath(params.qc_nb, checkIfExists: true)
     ch_report_clustering = Channel.fromPath(params.cluster_nb, checkIfExists: true)
+    ch_report_bcellatlas = Channel.fromPath(params.bcellatlas_nb, checkIfExists: true)
 
 
     ch_samplesheet.dump(tag: "samplesheet")
@@ -65,6 +67,17 @@ workflow SCINTEGRATOR {
         ch_ensembl_ig_tr_genes
     )
     ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions)
+
+    //
+    // MODULE: Run B cell atlas annotation
+    //
+    if (params.bcellatlas) {
+        BCELLATLAS (
+            SCANPY_CLUSTER.out.h5ad,
+            ch_report_bcellatlas.collect()
+        )
+        ch_versions = ch_versions.mix(BCELLATLAS.out.versions)
+    }
 
     //
     // Collate and save software versions

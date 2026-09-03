@@ -115,6 +115,24 @@
                 }
             }
         },
+        "bcellatlas": {
+            "title": "Bcellatlas",
+            "type": "object",
+            "description": "B cell atlas annotation steps",
+            "default": "",
+            "properties": {
+                "bcellatlas": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Run the B cell atlas notebook after QC and clustering."
+                },
+                "bcellatlas_nb": {
+                    "type": "string",
+                    "default": "assets/bcellatlas.ipynb",
+                    "description": "Path to the B cell atlas notebook."
+                }
+            }
+        },
         "input_output_options": {
             "title": "Input/output options",
             "type": "object",
@@ -396,6 +414,9 @@
         },
         {
             "$ref": "#/definitions/scanpy_qc"
+        },
+        {
+            "$ref": "#/definitions/bcellatlas"
         },
         {
             "$ref": "#/definitions/input_output_options"

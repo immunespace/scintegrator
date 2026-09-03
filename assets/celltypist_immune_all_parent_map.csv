@@ -1,0 +1,99 @@
+Immune_All_Low_celltype,Immune_All_High_parent,basis
+Age-associated B cells,B cells,inferred
+B cells,B cells,exact
+Follicular B cells,B cells,inferred
+Germinal center B cells,B cells,inferred
+Large pre-B cells,B cells,inferred
+Memory B cells,B cells,inferred
+Naive B cells,B cells,inferred
+Pre-pro-B cells,B cells,inferred
+Pro-B cells,B cells,inferred
+Small pre-B cells,B cells,inferred
+Transitional B cells,B cells,inferred
+Cycling B cells,Cycling cells,inferred
+Cycling DCs,Cycling cells,inferred
+Cycling NK cells,Cycling cells,inferred
+Cycling T cells,Cycling cells,inferred
+Cycling gamma-delta T cells,Cycling cells,inferred
+Cycling monocytes,Cycling cells,inferred
+Proliferative germinal center B cells,Cycling cells,inferred
+DC,DC,exact
+DC1,DC,inferred
+DC2,DC,inferred
+DC3,DC,inferred
+Migratory DCs,DC,inferred
+Transitional DC,DC,inferred
+DC precursor,DC precursor,exact
+Double-negative thymocytes,Double-negative thymocytes,exact
+Double-positive thymocytes,Double-positive thymocytes,exact
+ETP,ETP,exact
+Early MK,Early MK,exact
+MEMP,Early MK,inferred
+Megakaryocyte-erythroid-mast cell progenitor,Early MK,inferred
+Endothelial cells,Endothelial cells,exact
+Epithelial cells,Epithelial cells,exact
+Erythrocytes,Erythrocytes,exact
+Early erythroid,Erythroid,inferred
+Late erythroid,Erythroid,inferred
+Mid erythroid,Erythroid,inferred
+Fibroblasts,Fibroblasts,exact
+Granulocytes,Granulocytes,exact
+Neutrophils,Granulocytes,inferred
+CMP,HSC/MPP,inferred
+ELP,HSC/MPP,inferred
+Early lymphoid/T lymphoid,HSC/MPP,inferred
+GMP,HSC/MPP,inferred
+HSC/MPP,HSC/MPP,exact
+Neutrophil-myeloid progenitor,HSC/MPP,inferred
+CD16+ NK cells,ILC,inferred
+CD16- NK cells,ILC,inferred
+ILC,ILC,exact
+ILC1,ILC,inferred
+ILC2,ILC,inferred
+ILC3,ILC,inferred
+NK cells,ILC,inferred
+Transitional NK,ILC,inferred
+ILC precursor,ILC precursor,exact
+MNP,MNP,exact
+Alveolar macrophages,Macrophages,inferred
+Erythrophagocytic macrophages,Macrophages,inferred
+Hofbauer cells,Macrophages,inferred
+Intermediate macrophages,Macrophages,inferred
+Intestinal macrophages,Macrophages,inferred
+Kidney-resident macrophages,Macrophages,inferred
+Kupffer cells,Macrophages,inferred
+Macrophages,Macrophages,exact
+Mast cells,Mast cells,exact
+Megakaryocyte precursor,Megakaryocyte precursor,exact
+Megakaryocytes/platelets,Megakaryocytes/platelets,exact
+Mono-mac,Mono-mac,exact
+Monocyte precursor,Monocyte precursor,exact
+Classical monocytes,Monocytes,inferred
+Monocytes,Monocytes,exact
+Non-classical monocytes,Monocytes,inferred
+Myelocytes,Myelocytes,exact
+Plasma cells,Plasma cells,exact
+Plasmablasts,Plasma cells,inferred
+Promyelocytes,Promyelocytes,exact
+CD8a/a,T cells,inferred
+CD8a/b(entry),T cells,inferred
+CRTAM+ gamma-delta T cells,T cells,inferred
+Follicular helper T cells,T cells,inferred
+MAIT cells,T cells,inferred
+Memory CD4+ cytotoxic T cells,T cells,inferred
+NKT cells,T cells,inferred
+Regulatory T cells,T cells,inferred
+T(agonist),T cells,inferred
+Tcm/Naive cytotoxic T cells,T cells,inferred
+Tcm/Naive helper T cells,T cells,inferred
+Tem/Effector helper T cells,T cells,inferred
+Tem/Effector helper T cells PD1+,T cells,inferred
+Tem/Temra cytotoxic T cells,T cells,inferred
+Tem/Trm cytotoxic T cells,T cells,inferred
+Treg(diff),T cells,inferred
+Trm cytotoxic T cells,T cells,inferred
+Type 1 helper T cells,T cells,inferred
+Type 17 helper T cells,T cells,inferred
+gamma-delta T cells,T cells,inferred
+pDC,pDC,exact
+pDC precursor,pDC precursor,exact
