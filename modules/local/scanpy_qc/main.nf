@@ -12,6 +12,7 @@ process SCANPY_QC {
 
     input:
     path(h5_files)
+    path(sample_metadata)
     path(qc_nb)
 
     output:
@@ -31,7 +32,8 @@ process SCANPY_QC {
     -p scanpy_min_genes ${params.scanpy_min_genes} \\
     -p scanpy_min_cells ${params.scanpy_min_cells}  \\
     -p scanpy_pct_mt ${params.scanpy_pct_mt}  \\
-    -p scanpy_total_counts ${params.scanpy_total_counts}
+    -p scanpy_total_counts ${params.scanpy_total_counts}  \\
+    -p sample_metadata_path ${sample_metadata}
 
     jupyter nbconvert --to html pipeline_QC_out.ipynb
     cat <<-END_VERSIONS > versions.yml

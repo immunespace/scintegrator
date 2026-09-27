@@ -24,17 +24,20 @@ Here’s an example of a valid samplesheet:
 
 ```csv title="samplesheet.csv"
 
-sample,path_to_h5_file,study_id
-sample1,sample1.h5,test
-sample2,sample2.h5,test
+sample_id,path,subject_id,study_id
+sample1,sample1.h5,subject1,test
+sample2,sample2.h5,subject1,test
 
 ```
 
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `path_to_h5_file` | Full path to h5 file of scRNA-seq data.                                                            |
-                                                           |
+| Column       | Description                                                                                                                                                                            |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sample_id`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
+| `path`       | Full path to h5 file of scRNA-seq data.                                                            |
+| `subject_id` | Identifier for the subject/individual the sample was collected from. Shared across samples from the same subject (e.g. multiple timepoints). |
+| `study_id`   | Identifier for the study/dataset the sample belongs to.                                            |
+
+`sample_id`, `subject_id`, and `study_id` are all carried through into the QC step and added as columns on `adata.obs`.
 
 An [example samplesheet](../assets/test_samplesheet.csv) has been provided with the pipeline.
 

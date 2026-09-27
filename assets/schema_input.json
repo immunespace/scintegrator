@@ -20,6 +20,12 @@
                 "exists": true,
                 "errorMessage": "Path to folder with read matrix must be provided"
             },
+            "subject_id": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Subject ID must be provided and cannot contain spaces",
+                "meta": ["subject_id"]
+            },
             "study_id": {
                 "type": "string",
                 "format": "string",
@@ -28,6 +34,6 @@
                 "meta": ["study_id"]
             }
         },
-        "required": ["sample_id", "path", "study_id"]
+        "required": ["sample_id", "path", "subject_id", "study_id"]
     }
 }

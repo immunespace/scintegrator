@@ -41,6 +41,14 @@ workflow SCINTEGRATOR {
                     .dump(tag: "samplesheet-collapsed")
                     .set{ch_all_h5}
 
+    // Per-sample metadata (subject_id, sample_id, study_id) keyed by the staged h5 filename,
+    // so it can be joined back onto adata.obs in the QC notebook.
+    ch_samplesheet
+        .map { meta, path -> "${path.getName()},${meta.id},${meta.subject_id},${meta.study_id}" }
+        .collectFile(name: 'sample_metadata.csv', newLine: true, sort: false, seed: 'filename,sample_id,subject_id,study_id')
+        .dump(tag: "sample-metadata")
+        .set { ch_sample_metadata }
+
     if (params.fetch_ensembl_ig_tr_genes){
         ENSEMBL_REF()
         ch_ensembl_ig_tr_genes = ENSEMBL_REF.out.ensembl_tr_ig_genes
@@ -54,6 +62,7 @@ workflow SCINTEGRATOR {
     //
     SCANPY_QC (
         ch_all_h5,
+        ch_sample_metadata,
         ch_report_qc.collect()
     )
     ch_versions = ch_versions.mix(SCANPY_QC.out.versions)
