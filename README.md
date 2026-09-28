@@ -53,6 +53,8 @@ sample2,sample2.h5,F15,test
 
 - `sample`: Sample identifiers.
 - `path_to_h5_file`: h5 file of scRNA-seq data.
+- `subject_id`: Subject identifiers.
+- `study_id`: Study identifiers.
 
 ## Usage
 
