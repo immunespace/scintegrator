@@ -1,29 +1,31 @@
-process BCELLATLAS {
+process BCELLDB_SUMMARY {
     label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     'https://github.com/immunespace/scintegrator/releases/download/v1.1-containers/immcantation-scintegrator-1.1.sif' :
-    'docker.io/immcantation/scintegrator:1.1' }"
-
-    publishDir "${params.outdir}/bcellatlas", mode: 'copy'
+    'docker.io/immcantation/scintegrator:1.2' }"
+    publishDir "${params.outdir}/bcelldb_summary", mode: 'copy'
 
     input:
-    path(h5ad)
-    path(bcellatlas_nb)
+    path(adata)
+    path(scbcr)
+    path(notebook)
 
     output:
-    path("*.ipynb"), emit: notebook
-    path("*.html"), emit: html
-    path  "versions.yml"       , emit: versions
+    path("bcelldb_summary.ipynb"), emit: report
+    path("statistics/*"),          emit: stats
+    path "versions.yml",           emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     """
-    papermill ${bcellatlas_nb} bcellatlas_out.ipynb
+    papermill ${notebook} bcelldb_summary.ipynb \\
+        -p adata_path ${adata} \\
+        -p scbcr_path ${scbcr} \\
+        -p outdir statistics
 
-    jupyter nbconvert --to html bcellatlas_out.ipynb
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')

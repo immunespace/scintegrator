@@ -6,7 +6,7 @@ process SCANPY_QC {
     // container 'docker.io/immcantation/scintegrator:1.1'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     'https://github.com/immunespace/scintegrator/releases/download/v1.1-containers/immcantation-scintegrator-1.1.sif' :
-    'docker.io/immcantation/scintegrator:1.1' }"
+    'docker.io/immcantation/scintegrator:1.2' }"
 
     publishDir "${params.outdir}/scanpy_qc", mode: 'copy'
 

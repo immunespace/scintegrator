@@ -16,6 +16,7 @@ nextflow.enable.dsl = 2
 */
 
 include { SCINTEGRATOR  } from './workflows/scintegrator'
+include { BCELLDB_SUMMARY as BCELLDB_SUMMARY_ONLY } from './modules/local/bcelldb_summary/main'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_scintegrator_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_scintegrator_pipeline'
 
@@ -69,38 +70,54 @@ workflow {
 
     main:
 
-    //
-    // SUBWORKFLOW: Run initialisation tasks
-    //
-    PIPELINE_INITIALISATION (
-        params.version,
-        params.help,
-        params.validate_params,
-        params.monochrome_logs,
-        args,
-        params.outdir,
-        params.input
-    )
+    if (params.bcelldb_only) {
+        //
+        // Summary only: no samplesheet, no QC/clustering, no MultiQC
+        //
+        if (!params.bcelldb_adata || !params.bcelldb_scbcr) {
+            error "--bcelldb_only requires --bcelldb_adata and --bcelldb_scbcr"
+        }
 
-    //
-    // WORKFLOW: Run main workflow
-    //
-    IMMUNESPACE_SCINTEGRATOR (
-        PIPELINE_INITIALISATION.out.samplesheet
-    )
+        BCELLDB_SUMMARY_ONLY (
+            Channel.value(file(params.bcelldb_adata, checkIfExists: true)),
+            file(params.bcelldb_scbcr, checkIfExists: true),
+            Channel.fromPath(params.bcelldb_nb, checkIfExists: true).collect()
+        )
 
-    //
-    // SUBWORKFLOW: Run completion tasks
-    //
-    PIPELINE_COMPLETION (
-        params.email,
-        params.email_on_fail,
-        params.plaintext_email,
-        params.outdir,
-        params.monochrome_logs,
-        params.hook_url,
-        IMMUNESPACE_SCINTEGRATOR.out.multiqc_report
-    )
+    } else {
+        //
+        // SUBWORKFLOW: Run initialisation tasks
+        //
+        PIPELINE_INITIALISATION (
+            params.version,
+            params.help,
+            params.validate_params,
+            params.monochrome_logs,
+            args,
+            params.outdir,
+            params.input
+        )
+
+        //
+        // WORKFLOW: Run main workflow
+        //
+        IMMUNESPACE_SCINTEGRATOR (
+            PIPELINE_INITIALISATION.out.samplesheet
+        )
+
+        //
+        // SUBWORKFLOW: Run completion tasks
+        //
+        PIPELINE_COMPLETION (
+            params.email,
+            params.email_on_fail,
+            params.plaintext_email,
+            params.outdir,
+            params.monochrome_logs,
+            params.hook_url,
+            IMMUNESPACE_SCINTEGRATOR.out.multiqc_report
+        )
+    }
 }
 
 /*

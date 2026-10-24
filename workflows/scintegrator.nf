@@ -8,7 +8,7 @@ include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { SCANPY_QC              } from '../modules/local/scanpy_qc/main'
 include { SCANPY_CLUSTER         } from '../modules/local/scanpy_cluster/main'
-include { BCELLATLAS             } from '../modules/local/bcellatlas/main'
+include { BCELLDB_SUMMARY        } from '../modules/local/bcelldb_summary/main'
 include { ENSEMBL_REF            } from '../modules/local/ensembl_ref/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -32,7 +32,7 @@ workflow SCINTEGRATOR {
     ch_multiqc_files = Channel.empty()
     ch_report_qc = Channel.fromPath(params.qc_nb, checkIfExists: true)
     ch_report_clustering = Channel.fromPath(params.cluster_nb, checkIfExists: true)
-    ch_report_bcellatlas = Channel.fromPath(params.bcellatlas_nb, checkIfExists: true)
+    ch_report_bcelldb = Channel.fromPath(params.bcelldb_nb, checkIfExists: true)
 
 
     ch_samplesheet.dump(tag: "samplesheet")
@@ -77,15 +77,29 @@ workflow SCINTEGRATOR {
     )
     ch_versions = ch_versions.mix(SCANPY_CLUSTER.out.versions)
 
+
     //
-    // MODULE: Run B cell atlas annotation
+    // MODULE: B cell database summary (only with --bcelldb true)
     //
-    if (params.bcellatlas) {
-        BCELLATLAS (
-            SCANPY_CLUSTER.out.h5ad,
-            ch_report_bcellatlas.collect()
+    if (params.bcelldb) {
+        if (!params.bcelldb_scbcr) {
+            error "--bcelldb requires --bcelldb_scbcr"
+        }
+
+        // Use concat.h5ad from SCANPY_CLUSTER unless the user supplied one explicitly
+        ch_bcelldb_adata = params.bcelldb_adata
+            ? Channel.value(file(params.bcelldb_adata, checkIfExists: true))
+            : SCANPY_CLUSTER.out.h5ad
+                .flatten()
+                .filter { it.name == 'concat.h5ad' }
+                .first()
+
+            BCELLDB_SUMMARY (
+            ch_bcelldb_adata,
+            file(params.bcelldb_scbcr, checkIfExists: true),
+            ch_report_bcelldb.collect()
         )
-        ch_versions = ch_versions.mix(BCELLATLAS.out.versions)
+        ch_versions = ch_versions.mix(BCELLDB_SUMMARY.out.versions)
     }
 
     //

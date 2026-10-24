@@ -34,6 +34,7 @@ dependencies:
   - conda-forge::pip
   - bioconda::celltypist
   - pip:
+      - airr
       - mpl-scatter-density
       - scimap
       - datacache
