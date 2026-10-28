@@ -2,7 +2,7 @@ process BCELLDB_SUMMARY {
     label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://github.com/immunespace/scintegrator/releases/download/v1.1-containers/immcantation-scintegrator-1.1.sif' :
+    'https://github.com/immunespace/scintegrator/releases/download/v1.2_containers/immcantation-scintegrator-1.2.sif' :
     'docker.io/immcantation/scintegrator:1.2' }"
     publishDir "${params.outdir}/bcelldb_summary", mode: 'copy'
 

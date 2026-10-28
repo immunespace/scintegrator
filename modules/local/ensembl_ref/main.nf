@@ -3,8 +3,8 @@ process ENSEMBL_REF {
     //build container under the same folder first with
     // docker build . -t scintegrator/scanpy_cluster:dev
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://github.com/immunespace/scintegrator/releases/download/v1.1-containers/immcantation-scintegrator-1.1.sif' :
-    'docker.io/immcantation/scintegrator:1.1' }"
+    'https://github.com/immunespace/scintegrator/releases/download/v1.2-containers/immcantation-scintegrator-1.2.sif' :
+    'docker.io/immcantation/scintegrator:1.2' }"
     publishDir "${params.outdir}/ensembl_ig_tr_genes", mode: 'copy'
 
     output:
