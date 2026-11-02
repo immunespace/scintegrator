@@ -35,16 +35,29 @@ workflow SCINTEGRATOR {
     ch_report_bcelldb = Channel.fromPath(params.bcelldb_nb, checkIfExists: true)
 
 
+    // Cell Ranger outputs usually share the same filename (filtered_feature_bc_matrix.h5),
+    // so sample IDs and h5 paths are collected together (same order) and SCANPY_QC renames
+    // each file to <sample_id>.h5. Output h5ad files are then named <sample_id>.h5ad.
     ch_samplesheet.dump(tag: "samplesheet")
-                    .map{ it -> it[1] }
-                    .collect()
-                    .dump(tag: "samplesheet-collapsed")
-                    .set{ch_all_h5}
+                    .toList()
+                    .map { rows ->
+                        def ids = rows.collect { it[0].id }
+                        def dups = ids.findAll { id -> ids.count(id) > 1 }.unique()
+                        if (dups) {
+                            error "Duplicate sample_id in samplesheet: ${dups.join(', ')}"
+                        }
+                        rows
+                    }
+                    .multiMap { rows ->
+                        ids: rows.collect { it[0].id }
+                        h5:  rows.collect { it[1] }
+                    }
+                    .set { ch_all_h5 }
 
-    // Per-sample metadata (subject_id, sample_id, study_id) keyed by the staged h5 filename,
-    // so it can be joined back onto adata.obs in the QC notebook.
+    // Per-sample metadata (subject_id, sample_id, study_id) keyed by the renamed h5 filename
+    // (<sample_id>.h5), so it can be joined back onto adata.obs in the QC notebook.
     ch_samplesheet
-        .map { meta, path -> "${path.getName()},${meta.id},${meta.subject_id},${meta.study_id}" }
+        .map { meta, path -> "${meta.id}.h5,${meta.id},${meta.subject_id},${meta.study_id}" }
         .collectFile(name: 'sample_metadata.csv', newLine: true, sort: false, seed: 'filename,sample_id,subject_id,study_id')
         .dump(tag: "sample-metadata")
         .set { ch_sample_metadata }
@@ -61,7 +74,8 @@ workflow SCINTEGRATOR {
     // MODULE: Run Scanpy QC
     //
     SCANPY_QC (
-        ch_all_h5,
+        ch_all_h5.ids,
+        ch_all_h5.h5,
         ch_sample_metadata,
         ch_report_qc.collect()
     )

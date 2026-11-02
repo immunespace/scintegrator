@@ -11,7 +11,9 @@ process SCANPY_QC {
     publishDir "${params.outdir}/scanpy_qc", mode: 'copy'
 
     input:
-    path(h5_files)
+    val(sample_ids)
+    // Stage each h5 into its own subdirectory so identical filenames don't collide
+    path(h5_files, stageAs: 'input_h5_?/*')
     path(sample_metadata)
     path(qc_nb)
 
@@ -24,7 +26,14 @@ process SCANPY_QC {
     task.ext.when == null || task.ext.when
 
     script:
+    // Link each staged h5 as <sample_id>.h5; the notebook names outputs after the input file
+    def h5_list = h5_files instanceof List ? h5_files : [h5_files]
+    def link_h5 = [sample_ids, h5_list].transpose()
+        .collect { id, h5 -> "ln -s ${h5} ${id}.h5" }
+        .join('\n    ')
     """
+    ${link_h5}
+
     #python -m ipykernel install --user --name pipeline_QC
     papermill ${qc_nb} pipeline_QC_out.ipynb \\
     -p scanpy_species ${params.scanpy_species} \\
