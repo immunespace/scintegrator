@@ -12,7 +12,7 @@ process BCELLDB_SUMMARY {
     path(notebook)
 
     output:
-    path("bcelldb_summary.html"), emit: html
+    path("bcelldb_summary_out.html"), emit: html
     path("statistics/*"),          emit: stats
     path("All_samples__repertoire-pass_merged.tsv"),  emit: merged
     path "versions.yml",           emit: versions
