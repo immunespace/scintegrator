@@ -27,7 +27,7 @@ process BCELLDB_SUMMARY {
         -p scbcr_path ${scbcr} \\
         -p outdir statistics
 
-    jupyter nbconvert --to html bcelldb_summary_out.ipynb --output bcelldb_summary
+    jupyter nbconvert --to html bcelldb_summary_out.ipynb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
