@@ -22,7 +22,7 @@ process BCELLDB_SUMMARY {
 
     script:
     """
-    papermill ${notebook} bcelldb_summary.ipynb \\
+    papermill ${notebook} bcelldb_summary_out.ipynb \\
         -p adata_path ${adata} \\
         -p scbcr_path ${scbcr} \\
         -p outdir statistics
