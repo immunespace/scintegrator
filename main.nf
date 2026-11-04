@@ -16,7 +16,7 @@ nextflow.enable.dsl = 2
 */
 
 include { SCINTEGRATOR  } from './workflows/scintegrator'
-include { BCELLDB_SUMMARY as BCELLDB_SUMMARY_ONLY } from './modules/local/bcelldb_summary/main'
+include { BCELL_SUMMARY as BCELL_SUMMARY_ONLY } from './modules/local/bcell_summary/main'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_scintegrator_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_scintegrator_pipeline'
 
@@ -82,10 +82,10 @@ workflow {
         if (!params.outdir) {
             error "Please provide --outdir"
         }
-        BCELLDB_SUMMARY_ONLY (
+        BCELL_SUMMARY_ONLY (
             Channel.value(file(params.bcell_scrna, checkIfExists: true)),
             file(params.bcell_scbcr, checkIfExists: true),
-            Channel.fromPath(params.bcelldb_nb, checkIfExists: true).collect()
+            Channel.fromPath(params.bcell_nb, checkIfExists: true).collect()
         )
 
     } else {

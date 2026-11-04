@@ -8,7 +8,7 @@ include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { SCANPY_QC              } from '../modules/local/scanpy_qc/main'
 include { SCANPY_CLUSTER         } from '../modules/local/scanpy_cluster/main'
-include { BCELLDB_SUMMARY        } from '../modules/local/bcelldb_summary/main'
+include { BCELL_SUMMARY        } from '../modules/local/bcell_summary/main'
 include { ENSEMBL_REF            } from '../modules/local/ensembl_ref/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -101,7 +101,7 @@ workflow SCINTEGRATOR {
             .filter { it.name == 'concat.h5ad' }
             .first()
 
-        BCELLDB_SUMMARY (
+        BCELL_SUMMARY (
             ch_bcell_scrna,
             file(params.bcell_scbcr, checkIfExists: true),
             ch_report_bcell.collect()

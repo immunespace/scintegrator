@@ -1,10 +1,10 @@
-process BCELLDB_SUMMARY {
+process BCELL_SUMMARY {
     label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     'https://github.com/immunespace/scintegrator/releases/download/v1.2_containers/immcantation-scintegrator-1.2.sif' :
     'docker.io/immcantation/scintegrator:1.2' }"
-    publishDir "${params.outdir}/scbcr_summary", mode: 'copy'
+    publishDir "${params.outdir}/bcell_summary", mode: 'copy'
 
     input:
     path(scrna)
@@ -12,7 +12,7 @@ process BCELLDB_SUMMARY {
     path(notebook)
 
     output:
-    path("scbcr_summary_out.html"), emit: html
+    path("bcell_summary_out.html"), emit: html
     path("statistics/*"),          emit: stats
     path("All_samples__repertoire-pass_merged.tsv"),  emit: merged
     path "versions.yml",           emit: versions
@@ -23,12 +23,12 @@ process BCELLDB_SUMMARY {
     script:
     """
     mkdir -p statistics
-    papermill ${notebook} scbcr_summary_out.ipynb \\
+    papermill ${notebook} bcell_summary_out.ipynb \\
         -p scrna_path ${scrna} \\
         -p scbcr_path ${scbcr} \\
         -p outdir statistics
 
-    jupyter nbconvert --to html scbcr_summary_out.ipynb \\
+    jupyter nbconvert --to html bcell_summary_out.ipynb \\
     --no-input --no-prompt
 
     cat <<-END_VERSIONS > versions.yml
