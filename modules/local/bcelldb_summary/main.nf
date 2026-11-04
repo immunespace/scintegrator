@@ -12,8 +12,9 @@ process BCELLDB_SUMMARY {
     path(notebook)
 
     output:
-    path("bcelldb_summary.ipynb"), emit: report
+    path("bcelldb_summary.html"), emit: html
     path("statistics/*"),          emit: stats
+    path("All_samples__repertoire-pass_merged.tsv"),  emit: merged
     path "versions.yml",           emit: versions
 
     when:
@@ -25,6 +26,8 @@ process BCELLDB_SUMMARY {
         -p adata_path ${adata} \\
         -p scbcr_path ${scbcr} \\
         -p outdir statistics
+
+    jupyter nbconvert --to html bcelldb_summary_out.ipynb --output bcelldb_summary
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
