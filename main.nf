@@ -70,17 +70,21 @@ workflow {
 
     main:
 
-    if (params.bcelldb_only) {
-        //
-        // Summary only: no samplesheet, no QC/clustering, no MultiQC
-        //
-        if (!params.bcelldb_adata || !params.bcelldb_scbcr) {
-            error "--bcelldb_only requires --bcelldb_adata and --bcelldb_scbcr"
-        }
+    // the summary always needs the BCR table
+    if (params.bcell_scrna && !params.bcell_scbcr) {
+        error "--bcell_scrna requires --bcell_scbcr"
+    }
 
+    if (params.bcell_scrna && params.bcell_scbcr) {
+        //
+        // Both files given: summary only, no samplesheet, no QC/clustering
+        //
+        if (!params.outdir) {
+            error "Please provide --outdir"
+        }
         BCELLDB_SUMMARY_ONLY (
-            Channel.value(file(params.bcelldb_adata, checkIfExists: true)),
-            file(params.bcelldb_scbcr, checkIfExists: true),
+            Channel.value(file(params.bcell_scrna, checkIfExists: true)),
+            file(params.bcell_scbcr, checkIfExists: true),
             Channel.fromPath(params.bcelldb_nb, checkIfExists: true).collect()
         )
 

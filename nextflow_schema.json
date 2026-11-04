@@ -115,21 +115,21 @@
                 }
             }
         },
-        "bcellatlas": {
-            "title": "Bcellatlas",
+        "scbcr_summary": {
+            "title": "scbcr_summary",
             "type": "object",
-            "description": "B cell atlas annotation steps",
+            "description": "B cell annotation and merging with airrflow steps",
             "default": "",
             "properties": {
                 "bcellatlas": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Run the B cell atlas notebook after QC and clustering."
+                    "description": "Run the scbcr_summary notebook after QC and clustering."
                 },
                 "bcellatlas_nb": {
                     "type": "string",
-                    "default": "assets/bcellatlas.ipynb",
-                    "description": "Path to the B cell atlas notebook."
+                    "default": "assets/scbcr_summary.ipynb",
+                    "description": "Path to the scbcr summary notebook."
                 }
             }
         },

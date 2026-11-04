@@ -32,7 +32,7 @@ workflow SCINTEGRATOR {
     ch_multiqc_files = Channel.empty()
     ch_report_qc = Channel.fromPath(params.qc_nb, checkIfExists: true)
     ch_report_clustering = Channel.fromPath(params.cluster_nb, checkIfExists: true)
-    ch_report_bcelldb = Channel.fromPath(params.bcelldb_nb, checkIfExists: true)
+    ch_report_bcell = Channel.fromPath(params.bcell_nb, checkIfExists: true)
 
 
     // Cell Ranger outputs usually share the same filename (filtered_feature_bc_matrix.h5),
@@ -93,25 +93,18 @@ workflow SCINTEGRATOR {
 
 
     //
-    // MODULE: B cell database summary (only with --bcelldb true)
+    // MODULE: B cell database summary (runs only when --bcell_scbcr is given)
     //
-    if (params.bcelldb) {
-        if (!params.bcelldb_scbcr) {
-            error "--bcelldb requires --bcelldb_scbcr"
-        }
+    if (params.bcell_scbcr) {
+        ch_bcell_scrna = SCANPY_CLUSTER.out.h5ad
+            .flatten()
+            .filter { it.name == 'concat.h5ad' }
+            .first()
 
-        // Use concat.h5ad from SCANPY_CLUSTER unless the user supplied one explicitly
-        ch_bcelldb_adata = params.bcelldb_adata
-            ? Channel.value(file(params.bcelldb_adata, checkIfExists: true))
-            : SCANPY_CLUSTER.out.h5ad
-                .flatten()
-                .filter { it.name == 'concat.h5ad' }
-                .first()
-
-            BCELLDB_SUMMARY (
-            ch_bcelldb_adata,
-            file(params.bcelldb_scbcr, checkIfExists: true),
-            ch_report_bcelldb.collect()
+        BCELLDB_SUMMARY (
+            ch_bcell_scrna,
+            file(params.bcell_scbcr, checkIfExists: true),
+            ch_report_bcell.collect()
         )
         ch_versions = ch_versions.mix(BCELLDB_SUMMARY.out.versions)
     }
