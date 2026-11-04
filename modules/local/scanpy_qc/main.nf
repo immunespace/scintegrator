@@ -45,7 +45,7 @@ process SCANPY_QC {
     -p sample_metadata_path ${sample_metadata}
 
     jupyter nbconvert --to html pipeline_QC_out.ipynb \\
-        --no-input --no-prompt
+    --no-input --no-prompt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

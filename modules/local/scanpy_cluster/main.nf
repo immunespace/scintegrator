@@ -36,7 +36,9 @@ process SCANPY_CLUSTER {
     -p hvg_max_mean ${params.hvg_max_mean} \\
     -p hvg_min_disp ${params.hvg_min_disp} \\
     -p Anno_model ${params.Anno_model}
-    jupyter nbconvert --to html pipeline_cluster_out.ipynb
+    jupyter nbconvert --to html pipeline_cluster_out.ipynb \\
+    --no-input --no-prompt
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')
