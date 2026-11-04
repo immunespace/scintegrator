@@ -106,7 +106,7 @@ workflow SCINTEGRATOR {
             file(params.bcell_scbcr, checkIfExists: true),
             ch_report_bcell.collect()
         )
-        ch_versions = ch_versions.mix(BCELLDB_SUMMARY.out.versions)
+        ch_versions = ch_versions.mix(BCELL_SUMMARY.out.versions)
     }
 
     //
