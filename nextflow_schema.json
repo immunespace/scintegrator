@@ -115,21 +115,32 @@
                 }
             }
         },
-        "scbcr_summary": {
-            "title": "scbcr_summary",
+        "bcell_summary": {
+            "title": "Bcell summary",
             "type": "object",
-            "description": "B cell annotation and merging with airrflow steps",
+            "fa_icon": "fas fa-database",
+            "description": "Optional summary of BCR+ cells, combining the scRNA-seq object with the scBCR repertoire table.",
+            "help_text": "Give only --bcell_scbcr to run the summary after the main pipeline (it uses concat.h5ad from the clustering step). Give both --bcell_scrna and --bcell_scbcr to run ONLY the summary, without a samplesheet.",
             "default": "",
             "properties": {
-                "bcellatlas": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Run the scbcr_summary notebook after QC and clustering."
+                "bcell_scrna": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "pattern": "^\\S+\\.h5ad$",
+                    "description": "Clustered AnnData file (concat.h5ad). With --bcell_scbcr, runs only the summary."
                 },
-                "bcellatlas_nb": {
+                "bcell_scbcr": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "pattern": "^\\S+\\.tsv$",
+                    "description": "scBCR repertoire table (All_samples__repertoire-pass.tsv). Alone, runs the summary after the main pipeline."
+                },
+                "bcell_nb": {
                     "type": "string",
                     "default": "assets/scbcr_summary.ipynb",
-                    "description": "Path to the scbcr summary notebook."
+                    "description": "Path to the BCR summary notebook."
                 }
             }
         },
@@ -416,7 +427,7 @@
             "$ref": "#/definitions/scanpy_qc"
         },
         {
-            "$ref": "#/definitions/bcellatlas"
+            "$ref": "#/definitions/bcell_summary"
         },
         {
             "$ref": "#/definitions/input_output_options"
