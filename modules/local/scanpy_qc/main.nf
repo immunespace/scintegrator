@@ -44,7 +44,9 @@ process SCANPY_QC {
     -p scanpy_total_counts ${params.scanpy_total_counts}  \\
     -p sample_metadata_path ${sample_metadata}
 
-    jupyter nbconvert --to html pipeline_QC_out.ipynb
+    jupyter nbconvert --to html pipeline_QC_out.ipynb \\
+        --no-input --no-prompt
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')
