@@ -28,8 +28,7 @@ process BCELLDB_SUMMARY {
         -p outdir statistics
 
     jupyter nbconvert --to html bcelldb_summary_out.ipynb \\
-    --no-input --no-prompt \\
-    --output bcelldb_summary
+    --no-input --no-prompt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
