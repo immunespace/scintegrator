@@ -93,17 +93,17 @@ workflow SCINTEGRATOR {
 
 
     //
-    // MODULE: B cell database summary (runs only when --bcell_scbcr is given)
+    // MODULE: B cell database summary (runs only when --scbcr is given)
     //
-    if (params.bcell_scbcr) {
-        ch_bcell_scrna = SCANPY_CLUSTER.out.h5ad
+    if (params.scbcr) {
+        ch_scrna = SCANPY_CLUSTER.out.h5ad
             .flatten()
             .filter { it.name == 'concat.h5ad' }
             .first()
 
         BCELL_SUMMARY (
-            ch_bcell_scrna,
-            file(params.bcell_scbcr, checkIfExists: true),
+            ch_scrna,
+            file(params.scbcr, checkIfExists: true),
             ch_report_bcell.collect()
         )
         ch_versions = ch_versions.mix(BCELL_SUMMARY.out.versions)
