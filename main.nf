@@ -71,11 +71,11 @@ workflow {
     main:
 
     // the summary always needs the BCR table
-    if (params.bcell_scrna && !params.bcell_scbcr) {
-        error "--bcell_scrna requires --bcell_scbcr"
+    if (params.scrna && !params.scbcr) {
+        error "--scrna requires --scbcr"
     }
 
-    if (params.bcell_scrna && params.bcell_scbcr) {
+    if (params.scrna && params.scbcr) {
         //
         // Both files given: summary only, no samplesheet, no QC/clustering
         //
@@ -83,8 +83,8 @@ workflow {
             error "Please provide --outdir"
         }
         BCELL_SUMMARY_ONLY (
-            Channel.value(file(params.bcell_scrna, checkIfExists: true)),
-            file(params.bcell_scbcr, checkIfExists: true),
+            Channel.value(file(params.scrna, checkIfExists: true)),
+            file(params.scbcr, checkIfExists: true),
             Channel.fromPath(params.bcell_nb, checkIfExists: true).collect()
         )
 
