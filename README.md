@@ -7,6 +7,8 @@
 
 **immunespace/scintegrator** is a bioinformatics pipeline to analyze single-cell RNA-seq (scRNA-seq) data using the **Scanpy** toolkit. It automates key steps of scRNA-seq analysis, such as data preprocessing, integration, clustering, annotation and visualization, enabling efficient and reproducible workflows.
 
+Optionally, if single-cell BCR (scBCR) repertoire data are available, the pipeline can also run a **B cell summary** that integrates the BCR repertoire with the annotated scRNA-seq data and reports isotype usage, clonal expansion, somatic hypermutation and V/J gene usage per B cell subtype.
+
 ## Pipeline summary
 
 Each of these steps in scintegration pipeline is customizable, allowing researchers to adjust parameters based on the specific characteristics of their dataset and research questions.
@@ -27,6 +29,14 @@ Each of these steps in scintegration pipeline is customizable, allowing research
   - Data Integration: Integrate data from different batches or experiments to correct for variations not related to biological differences using Harmony.
   - Annotation: Annotate identified clusters to known cell types based on marker gene expression using CellTypist.
 
+- **B cell summary (BCELL_SUMMARY)** *(optional)* - Integrates the annotated scRNA-seq object with single-cell BCR (scBCR) repertoire data (AIRR format) and summarizes the B cell repertoire. Runs a parameterized notebook (`bcell_summary.ipynb`) with Papermill and renders an HTML report.
+  - scBCR/scRNA integration: Match BCR barcodes to scRNA cells by sample and barcode, and report BCR+/BCR- cells per sample and per lineage (B, T, NK, DC).
+  - B cell annotation: Collapse fine-grained CellTypist labels into major cell types and subset B cell subtypes (naive, memory, germinal center, plasma cells, etc.).
+  - Marker expression: Dot plots of lineage markers (e.g. MS4A1, CD19, CD3E, GNLY, CST3) split by BCR status.
+  - Isotype assignment: Derive the isotype of each cell from the heavy chain constant region (IGHM, IGHD, IGHG, IGHA, IGHE); light chain calls are assigned the cell's heavy chain isotype.
+  - Repertoire statistics: Chain counts, isotype usage, clone size, somatic hypermutation frequency (`mu_freq`), CDR3 length, and V/J allele usage, summarized per study, subject, sample, B cell subtype and isotype.
+  - Combined output: All summary tables are saved together in a single file (`D3_statistics.db`, SQLite by default; Excel optional).
+
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
    major pipeline sections and the types of output it produces. You're giving an overview to someone new
@@ -46,13 +56,15 @@ Prepare a samplesheet in CSV format with your single-cell expression data. The f
 `samplesheet.csv`:
 
 ```csv
-sample,path_to_h5_file,study_id
-sample1,sample1.h5,test
-sample2,sample2.h5 test
+sample,path_to_h5_file,subject_id,study_id
+sample1,sample1.h5,F15,test
+sample2,sample2.h5,F15,test
 ```
 
 - `sample`: Sample identifiers.
 - `path_to_h5_file`: h5 file of scRNA-seq data.
+- `subject_id`: Subject identifiers.
+- `study_id`: Study identifiers.
 
 ## Usage
 
@@ -86,6 +98,31 @@ nextflow run immunespace/scintegrator \
    --outdir <OUTDIR>
 ```
 
+### Run the B cell summary
+
+The B cell summary is optional. To run it as part of the full pipeline, add the scBCR repertoire table:
+
+```bash
+nextflow run immunespace/scintegrator \
+   -profile <docker/singularity/.../institute> \
+   --input samplesheet.csv \
+   --scbcr All_samples__repertoire-pass.tsv \
+   --outdir <OUTDIR>
+```
+
+If you have already run QC and clustering, you can run only the B cell summary from the clustered object. No samplesheet is needed:
+
+```bash
+nextflow run immunespace/scintegrator \
+   -profile <docker/singularity/.../institute> \
+   --scrna concat.h5ad \
+   --scbcr All_samples__repertoire-pass.tsv \
+   --outdir <OUTDIR>
+```
+
+> [!NOTE]
+> `--scrna` requires `--scbcr`. Results are written to `<OUTDIR>/bcell_summary/`.
+
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_
 > see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
@@ -113,6 +150,11 @@ nextflow run immunespace/scintegrator \
 - --cluster_nb [string]  Path to the clustering notebook. [default: assets/pipeline_cluster.ipynb]
 - --Anno_model [string] Choose the reference model used for CellTypist annotation. Check https://www.celltypist.org/models.
 
+**Bcell summary (optional)**
+- --scbcr [string]  scBCR repertoire table in AIRR format (`All_samples__repertoire-pass.tsv`). On its own, runs the B cell summary after the main pipeline.
+- --scrna [string]  Clustered AnnData file (`concat.h5ad`). Together with `--scbcr`, runs only the B cell summary, without a samplesheet.
+- --bcell_nb [string]  Path to the B cell summary notebook. [default: assets/bcell_summary.ipynb]
+
 **Input/output options**
 - --input [string]  Path to comma-separated file containing information about the samples in the experiment.
 - --outdir [string]  The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.
@@ -122,6 +164,37 @@ nextflow run immunespace/scintegrator \
 **Generic options**
 - --multiqc_methods_description [string]  Custom MultiQC yaml file containing HTML including a methods description.
 
+
+### B cell summary (optional)
+
+The B cell summary is optional and only runs when the scBCR repertoire table is provided with `--scbcr`. It combines the clustered, annotated scRNA-seq object (`concat.h5ad`) with the scBCR repertoire table (AIRR format, `All_samples__repertoire-pass.tsv`).
+
+- `concat.h5ad`: its `obs` must contain `sample_id`, `barcode`, `cell_type` (CellTypist labels) and `study_id`.
+- `All_samples__repertoire-pass.tsv`: needs at least `sample_id`, `subject_id`, `cell_id`, `locus`, `c_call`, `v_call`, `j_call`, `cdr3`, `clone_id` and `mu_freq`.
+
+There are two ways to run it (see [Run the B cell summary](#run-the-b-cell-summary)):
+
+1. **After the main pipeline**: add `--scbcr`. The summary uses the `concat.h5ad` produced by the clustering step.
+2. **On its own**: give both `--scrna` and `--scbcr`. No samplesheet is needed and QC and clustering are skipped.
+
+**Outputs** (published to `<OUTDIR>/bcell_summary/`)
+
+- `statistics/SUBJECT_*.csv`, `statistics/SAMPLE_*.csv` (and `STUDY_*.csv` where generated): summary tables for each grouping level
+  - `*_SUMMARY`: BCR counts, light chain pairing, isotype counts and clone size statistics
+  - `*_CHAIN_SUMMARY`: mutation frequency and CDR3 length per chain (locus)
+  - `*_CHAIN_ISOTYPE_SUMMARY`, `*_CELLTYPE_SUMMARY`, `*_CHAIN_CELLTYPE_SUMMARY`, `*_CHAIN_CELLTYPE_ISOTYPE_SUMMARY`: the same statistics split by isotype and/or B cell subtype
+  - `*_VJ_ALLELE`, `*_VJ_ALLELE_CELLTYPE`: V and J allele usage
+- `statistics/D3_statistics.db`: all of the tables above in one SQLite file. Subject, sample and study tables are stacked per table name, with a `level` column (`STUDY`, `SUBJECT` or `SAMPLE`) and an `id` column. Setting `OUTPUT_FORMAT = "xlsx"` in the final notebook cell writes `D3_statistics.xlsx` instead, with one sheet per table.
+- `All_samples__repertoire-pass_merged.tsv`: the scBCR table merged with scRNA B cell annotations.
+- `bcell_summary_out.html`: the executed notebook rendered as an HTML report (plots and tables).
+
+To read the combined file in Python:
+
+```python
+import sqlite3, pandas as pd
+con = sqlite3.connect("<OUTDIR>/bcell_summary/statistics/D3_statistics.db")
+pd.read_sql("SELECT * FROM CHAIN_SUMMARY WHERE level='SAMPLE'", con)
+```
 
 ## Credits
 
